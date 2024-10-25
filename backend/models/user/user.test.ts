@@ -2,7 +2,6 @@ import { describe, test, expect, afterAll, afterEach, beforeAll, beforeEach } fr
 import { BadRequestError, NotFoundError } from '../../src/ExpressError';
 import { commonAfterAll, commonBeforeAll, commonAfterEach, commonBeforeEach, testUserIds } from '../testCommon';
 import User from './user';
-import exp from 'constants';
 
 afterAll(commonAfterAll);
 beforeAll(commonBeforeAll);

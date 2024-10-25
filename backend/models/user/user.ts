@@ -3,6 +3,7 @@ import { BadRequestError, NotFoundError } from '../../src/ExpressError';
 import bcrypt from 'bcrypt';
 import { BCRYPT_WORK_FACTOR } from '../../config';
 import sqlForPartialUpdate from '../../helpers/sql';
+import { timeStamp } from 'console';
 
 interface NewUser {
   first_name: string;
@@ -73,7 +74,7 @@ class User {
         return new NotFoundError("Invalid Username/Password")
   }
 
-  static async register({ first_name, last_name, username, password, email, is_admin = false }: NewUser) {
+  static async register({ first_name, last_name, username, password, email, is_admin = false}: NewUser) {
     //check to make sure that this username is available
 
     const userCheck = await db.query(

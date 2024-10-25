@@ -105,7 +105,7 @@ describe('update', () => {
       name: "updateCat"
     }
     
-    let updatedCategory = await Category.update(testCategoryIds[9], data)
+    await Category.update(testCategoryIds[9], data)
     expect(NotFoundError)
   })
 })
