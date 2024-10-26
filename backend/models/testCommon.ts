@@ -6,11 +6,14 @@ let testUserIds: number[] = [];
 let testCategoryIds: number[] = [];
 let testSubcategoryIds: number[] = [];
 let testBudgetIds: number[] = [];
+let testAllocationIds: number[] = [];
 
 async function commonBeforeAll() {
   await db.query('DELETE FROM categories');
   await db.query('DELETE FROM users');
   await db.query('DELETE FROM budgets');
+  await db.query('DELETE FROM subcategories');
+  await db.query('DELETE FROM allocations');
 
   const resultUser = await db.query(`
         INSERT INTO users(first_name, last_name, username, email, password, is_admin)
@@ -51,6 +54,15 @@ async function commonBeforeAll() {
     RETURNING id`);
 
   testBudgetIds.splice(0, 0, ...resultBudgets.rows.map((b: { id: number }) => b.id));
+
+  const resultAllocations = await db.query(`
+    INSERT INTO allocations(amount, subcategory_id, budget_id)
+    VALUES(200, ${testSubcategoryIds[0]}, ${testBudgetIds[0]}),
+          (500, ${testSubcategoryIds[1]}, ${testBudgetIds[1]}),
+          (770, ${testSubcategoryIds[1]}, ${testBudgetIds[1]})
+    RETURNING id`);
+
+  testAllocationIds.splice(0, 0, ...resultAllocations.rows.map((a: { id: number }) => a.id));
 }
 
 async function commonBeforeEach() {
@@ -74,4 +86,5 @@ export {
   testSubcategoryIds,
   testUserIds,
   testBudgetIds,
+  testAllocationIds
 };

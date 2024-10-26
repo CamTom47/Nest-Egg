@@ -161,7 +161,7 @@ describe('update', () => {
   test('throws error with invalid subcategory id', async () => {
     let data = {
       name: 'updateSubcat',
-    };
+    };w
 
     await Subcategory.update(testSubcategoryIds[9], data);
     expect(NotFoundError);

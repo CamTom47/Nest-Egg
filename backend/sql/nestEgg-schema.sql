@@ -39,6 +39,13 @@ CREATE TABLE budgets_categories(
     budget_id INTEGER REFERENCES budgets(id) ON DELETE CASCADE,
     category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE
 );
+
+CREATE TABLE allocations(
+    id SERIAL PRIMARY KEY,
+    amount MONEY,
+    subcategory_id INTEGER REFERENCES subcategories(id) ON DELETE CASCADE,
+    budget_id INTEGER REFERENCES budgets(id) ON DELETE CASCADE
+);
  
 
  
