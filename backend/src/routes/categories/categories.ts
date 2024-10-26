@@ -1,15 +1,17 @@
-const db = require('../../db');
-const bcrypt = require('bcrypt');
-const {
+import db from '../../db'
+import bcrypt from'bcrypt'
+import {
     ExpressError,
     NotFoundError,
     BadRequestError,
     UnauthorizedError
-} = require('../../ExpressError');
+} from'../../ExpressError'
 
 const BCRYPT_WORK_FACTOR = require('../../config.js');
 
-const e = require('express');
+import express from 'express'
+
+const router = express.Router();
 
 /** Related functions for category */
 

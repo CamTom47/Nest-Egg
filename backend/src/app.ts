@@ -19,7 +19,6 @@ dotenv.config();
 //initialize application
 const app = express();
 
-
 //use dependencies
 app.use(helmet());
 app.use(cors());
