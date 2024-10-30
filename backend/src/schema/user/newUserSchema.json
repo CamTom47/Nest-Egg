@@ -1,0 +1,65 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "New User Schema",
+    "properties": {
+        "first_name": {
+            "type": "string",
+            "default": "",
+            "title": "The first_name Schema",
+            "examples": [
+                "testF"
+            ]
+        },
+        "last_name": {
+            "type": "string",
+            "default": "",
+            "title": "The last_name Schema",
+            "examples": [
+                "testL"
+            ]
+        },
+        "username": {
+            "type": "string",
+            "default": "",
+            "title": "The username Schema",
+            "examples": [
+                "testUser"
+            ]
+        },
+        "password": {
+            "type": "string",
+            "default": "",
+            "title": "The password Schema",
+            "examples": [
+                "testPassword"
+            ]
+        },
+        "email": {
+            "type": "string",
+            "default": "",
+            "title": "The email Schema",
+            "examples": [
+                "test@test.com"
+            ]
+        },
+        "is_admin": {
+            "type": "boolean",
+            "default": false,
+            "title": "The is_admin Schema",
+            "examples": [
+                true
+            ]
+        }
+    },
+    "examples": [{
+        "first_name": "testF",
+        "last_name": "testL",
+        "username": "testUser",
+        "password": "testPassword",
+        "email": "test@test.com",
+        "is_admin": true
+    }]
+}

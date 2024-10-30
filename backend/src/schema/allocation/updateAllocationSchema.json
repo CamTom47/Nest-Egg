@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Update Allocation Schema",
+    "required": [
+        "amount"
+    ],
+    "properties": {
+        "amount": {
+            "type": "number",
+            "default": 0.0,
+            "title": "The amount Schema",
+            "examples": [
+                200.00
+            ]
+        }
+    },
+    "examples": [{
+        "amount": 200.00,
+        "subcategory_id": 1,
+        "budget_id": 2
+    }]
+}

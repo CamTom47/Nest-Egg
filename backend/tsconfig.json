@@ -40,7 +40,7 @@
       "@exceptions/*": ["exceptions/*"],
       "@interfaces/*": ["interfaces/*"],
       "@middlewares/*": ["middlewares/*"],
-      "@models/*": ["models/*"],
+      "@models/*": ["src/models/*"],
       "@routers/*": ["routers/*"],
       "@services/*": ["services/*"],
       "@utils/*": ["utils/*"]
@@ -123,6 +123,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src//*.ts", "src//*.json", ".env", "src/app.test.ts", "server.ts"],
+  "include": ["src/**/*.ts", "src/*.json", ".env", "src/server.ts"],
   "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
 }

@@ -22,7 +22,7 @@ CREATE TABLE categories (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT,
-    systemDefault BOOLEAN NOT NULL
+    system_default BOOLEAN NOT NULL
 );
  
 CREATE TABLE subcategories (
@@ -31,7 +31,7 @@ CREATE TABLE subcategories (
     description TEXT NOT NULL,
     category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    systemDefault BOOLEAN NOT NULL
+    system_default BOOLEAN NOT NULL
 );
 
 CREATE TABLE budgets_categories(

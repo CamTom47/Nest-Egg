@@ -1,15 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BCRYPT_WORK_FACTOR = exports.PORT = exports.SECRET_KEY = void 0;
+exports.BCRYPT_WORK_FACTOR = exports.SECRET_KEY = void 0;
 exports.getDatabaseUri = getDatabaseUri;
 const tslib_1 = require("tslib");
 /** Shared configuration for application; can be required many places */
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
 dotenv_1.default.config();
-const SECRET_KEY = process.env.PORT || "secret-dev";
+const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
 exports.SECRET_KEY = SECRET_KEY;
-const PORT = process.env.PORT || 3001;
-exports.PORT = PORT;
 // Use database, testing database, or via env var, production database
 function getDatabaseUri() {
     return (process.env.NODE_ENV === "test")

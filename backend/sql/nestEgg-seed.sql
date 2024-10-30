@@ -19,7 +19,7 @@ VALUES(
 INSERT INTO categories(
     name,
     description,
-    systemDefault
+    system_default
 )
 
 VALUES
@@ -37,4 +37,5 @@ VALUES
     ('Personal', null, true),
     ('Debt', null, true),
     ('Gifts/Donations', null, true),
-    ('Entertainment', null, true);
+    ('Entertainment', null, true),
+    ('Other', null, true);
