@@ -3,6 +3,7 @@ import { BadRequestError, NotFoundError } from '../../ExpressError';
 import sqlForPartialUpdate from '../../helpers/sql';
 
 interface NewBudget {
+  user_id: number;
   name: string;
   description: string;
 }
@@ -14,7 +15,7 @@ interface UpdateBudget {
 class Budget {
   static async findAll(): Promise<{}> {
     const result = await db.query(`
-            SELECT id, name, description, date_created
+            SELECT id, user_id AS "userId", name, description, date_created AS "dateCreated"
             FROM budgets`);
 
     const budgets = result.rows;
@@ -24,7 +25,7 @@ class Budget {
   static async findById(budget_id: number): Promise<{}> {
     const result = await db.query(
       `
-            SELECT id, name, description, date_created
+            SELECT id, user_id AS "userId", name, description, date_created AS "dateCreated"
             FROM budgets
             WHERE id = $1`,
       [budget_id]
@@ -37,13 +38,14 @@ class Budget {
     return budget;
   }
 
-  static async create({ name, description }: NewBudget) {
+  static async create({ user_id, name, description }: NewBudget) {
+    console.log(user_id)
     const result = await db.query(
       `
-            INSERT INTO budgets(name, description)
-            VALUES($1, $2)
-            RETURNING id, name, description, date_created`,
-      [name, description]
+            INSERT INTO budgets(user_id, name, description)
+            VALUES($1, $2, $3)
+            RETURNING id, user_id AS "userId", name, description, date_created AS "dateCreated"`,
+      [user_id, name, description]
     );
 
     const budget = result.rows[0];
@@ -67,7 +69,7 @@ class Budget {
       `     UPDATE budgets
             SET ${setCols}
             WHERE id = ${budgetVarIdx}
-            RETURNING id, name, description, date_created`,
+            RETURNING id, user_id AS "userId", name, description, date_created AS "dateCreated"`,
       [...values, id]
     );
 

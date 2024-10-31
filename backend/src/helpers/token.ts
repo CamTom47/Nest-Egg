@@ -9,13 +9,13 @@ interface Payload{
     isAdmin: boolean;
 }
 
-function createToken(user: {id: number, username: string, isAdmin: boolean}): {} {
-    console.assert(user.isAdmin !== undefined, "createtoken passwed without isAdmin property")
+function createToken({id, username, isAdmin}: Payload): {} {
+    console.assert(isAdmin !== undefined, "createtoken passwed without isAdmin property")
 
-    let payload: Payload = {
-        id: user.id,
-        username: user.username,
-        isAdmin: user.isAdmin || false
+    let payload = {
+        "id": id,
+        "username": username,
+        "isAdmin": isAdmin || false
     }
 
     return jwt.sign(payload, SECRET_KEY)

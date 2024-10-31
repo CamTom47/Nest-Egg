@@ -11,7 +11,7 @@ CREATE TABLE users (
  
 CREATE TABLE budgets (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     date_created TIMESTAMP DEFAULT now()

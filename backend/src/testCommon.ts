@@ -1,14 +1,17 @@
 import db from '../db';
 process.env.NODE_ENV = 'test';
 import createToken from './helpers/token'
+import { jest } from '@jest/globals';
 
 let testUserIds: number[] = [];
 let testCategoryIds: number[] = [];
 let testSubcategoryIds: number[] = [];
 let testBudgetIds: number[] = [];
 let testAllocationIds: number[] = [];
+let testBudgetDates: number[] = [];
 
 async function commonBeforeAll() {
+
   await db.query('DELETE FROM categories');
   await db.query('DELETE FROM users');
   await db.query('DELETE FROM budgets');
@@ -22,6 +25,9 @@ async function commonBeforeAll() {
         RETURNING id`);
 
   testUserIds.splice(0, 0, ...resultUser.rows.map((u: { id: number }) => u.id));
+
+  u1token = createToken({id: testUserIds[0], username: "testUser1", isAdmin: true})
+  u2token = createToken({id: testUserIds[1], username: "testUser2", isAdmin: false})
 
   const resultCategory = await db.query(
     `
@@ -49,12 +55,14 @@ async function commonBeforeAll() {
   testSubcategoryIds.splice(0, 0, ...resultSubcategory.rows.map((s: { id: number }) => s.id));
 
   const resultBudgets = await db.query(`
-    INSERT INTO budgets(name, description)
-    VALUES('TestBudget1', 'test1'),
-    ('TestBudget2', 'test2')
-    RETURNING id`);
+    INSERT INTO budgets(user_id, name, description)
+    VALUES($1,'TestBudget1', 'test1'),
+    ($1, 'TestBudget2', 'test2'),
+    ($2, 'TestBudget3', 'test3')
+    RETURNING id, date_created AS "dateCreated"`, [testUserIds[0], testUserIds[1]]);
 
   testBudgetIds.splice(0, 0, ...resultBudgets.rows.map((b: { id: number }) => b.id));
+  testBudgetDates.splice(0, 0, ...resultBudgets.rows.map((b: { dateCreated: Date }) => b.dateCreated.toISOString()));
 
   const resultAllocations = await db.query(`
     INSERT INTO allocations(amount, subcategory_id, budget_id)
@@ -78,8 +86,8 @@ async function commonAfterAll() {
   await db.end();
 }
 
-const u1token = createToken({id: testUserIds[0], username: "testUser1", isAdmin: true})
-const u2token = createToken({id: testUserIds[1], username: "testUser2", isAdmin: false})
+let u1token;
+let u2token;
 
 export {
   commonBeforeAll,
@@ -90,6 +98,7 @@ export {
   testSubcategoryIds,
   testUserIds,
   testBudgetIds,
+  testBudgetDates,
   testAllocationIds,
   u1token,
   u2token

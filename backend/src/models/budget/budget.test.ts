@@ -1,6 +1,6 @@
 import { describe, test, expect, afterAll, afterEach, beforeAll, beforeEach } from '@jest/globals';
 import { BadRequestError, NotFoundError } from '../../../src/ExpressError';
-import { commonAfterAll, commonBeforeAll, commonAfterEach, commonBeforeEach, testBudgetIds } from '../../testCommon';
+import { commonAfterAll, commonBeforeAll, commonAfterEach, commonBeforeEach, testBudgetIds, testUserIds } from '../../testCommon';
 import Budget from './budget';
 
 afterAll(commonAfterAll);
@@ -12,8 +12,9 @@ describe('Find all budgets', () => {
   test('works', async () => {
     const budgets = await Budget.findAll();
     expect(budgets).toEqual([
-      { id: expect.any(Number), name: 'TestBudget1', description: 'test1', date_created: expect.any(Date) },
-      { id: expect.any(Number), name: 'TestBudget2', description: 'test2', date_created: expect.any(Date) },
+      { id: expect.any(Number), userId: testUserIds[0], name: 'TestBudget1', description: 'test1', date_created: expect.any(Date) },
+      { id: expect.any(Number), userId: testUserIds[0], name: 'TestBudget2', description: 'test2', date_created: expect.any(Date) },
+      { id: expect.any(Number), userId: testUserIds[1], name: 'TestBudget3', description: 'test3', date_created: expect.any(Date) },
     ]);
   });
 });
@@ -22,6 +23,7 @@ describe('Find a budget by ID', () => {
     const budget = await Budget.findById(testBudgetIds[0]);
     expect(budget).toEqual({
       id: expect.any(Number),
+      userId: testUserIds[0],
       name: 'TestBudget1',
       description: 'test1',
       date_created: expect.any(Date),
@@ -33,11 +35,12 @@ describe('Find a budget by ID', () => {
   });
 });
 describe('Create a new Budget', () => {
-  const data = { name: 'TestBudgetNew', description: 'testNew', date_created: new Date().toISOString() };
   test('works', async () => {
+    const data = { user_id: testUserIds[1], name: 'TestBudgetNew', description: 'testNew', date_created: new Date().toISOString() };
     const budget = await Budget.create(data);
     expect(budget).toEqual({
       id: expect.any(Number),
+      userId: testUserIds[1],
       name: 'TestBudgetNew',
       description: 'testNew',
       date_created: expect.any(Date),
@@ -46,7 +49,7 @@ describe('Create a new Budget', () => {
 });
 
 describe('Update an existing budgets information', () => {
-  test('works with no password', async () => {
+  test('works', async () => {
     const data = {
       name: 'budgetUpdate',
     };
@@ -54,6 +57,7 @@ describe('Update an existing budgets information', () => {
     const budget = await Budget.update(testBudgetIds[0], data);
     expect(budget).toEqual({
       id: expect.any(Number),
+      userId: testUserIds[0],
       name: 'budgetUpdate',
       description: 'test1',
       date_created: expect.any(Date),

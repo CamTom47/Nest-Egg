@@ -59,7 +59,7 @@ const ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
 const ensureCorrectUserOrAdmin = (req: Request, res: Response, next: NextFunction) => {
     try{
         let user = res.locals.user;
-       if(!(user && (user.isAdmin || user.username === req.params.username))){
+       if(!(user && (user.isAdmin || user.id === +req.query.userId))){
         throw new UnauthorizedError()
        }
        return next()
