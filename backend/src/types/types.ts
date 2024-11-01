@@ -25,3 +25,20 @@ export interface UpdateBudget {
   user_id?: number;
 }
 
+export interface NewUser {
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  password: string;
+  is_admin: boolean;
+}
+export interface UpdateUser {
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  is_admin?: boolean;
+}
+

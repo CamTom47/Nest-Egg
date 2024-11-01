@@ -71,5 +71,6 @@ const ensureCorrectUserOrAdmin = (req: Request, res: Response, next: NextFunctio
 export {
     authenticateJWT,
     ensureLoggedIn,
-    ensureCorrectUserOrAdmin
+    ensureCorrectUserOrAdmin,
+    ensureAdmin
 }

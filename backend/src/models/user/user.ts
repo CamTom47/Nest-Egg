@@ -43,7 +43,7 @@ class User {
 
     const user = result.rows[0];
 
-    if (!user) return NotFoundError;
+    if (!user) throw new NotFoundError;
 
     return user;
   }
@@ -143,12 +143,12 @@ class User {
       `     UPDATE users
             SET ${setCols}
             WHERE id = ${userVarIdx}
-            RETURNING id, username, password, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+            RETURNING id, username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
       [...values, id]
     );
 
     const user = result.rows[0];
-    if (!user) return new NotFoundError(`User with ID of ${id} does not exist`);
+    if (!user) throw new NotFoundError(`User with ID of ${id} does not exist`);
 
     return user;
   }
@@ -156,13 +156,15 @@ class User {
   static async delete(id: number) {
     if (!id) return new BadRequestError(`ID Needed`);
 
-    const user: {} = await db.query(
+    const result = await db.query(
       `
         SELECT username
         FROM users
         WHERE id = $1`,
       [id]
     );
+
+    const user = result.rows[0]
 
     if (!user) {
       throw new NotFoundError(`User ID Not Found: ${id}`);

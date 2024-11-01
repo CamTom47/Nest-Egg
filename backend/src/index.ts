@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import categoriesRoutes from './routes/categories/categories';
 import subcategoriesRoutes from './routes/subcategories/subcategories';
 import budgetsRoutes from './routes/budgets/budgets';
+import usersRoutes from './routes/users/users'
 
 import dotenv from 'dotenv';
 import express, {Express} from 'express';
@@ -28,6 +29,7 @@ app.use(authenticateJWT);
 app.use("/categories", categoriesRoutes);
 app.use("/subcategories", subcategoriesRoutes);
 app.use("/budgets", budgetsRoutes);
+app.use("/users", usersRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   return next(new NotFoundError());
