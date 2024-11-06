@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AllocationList from './AllocationList';
+import AllocationList from './AlloctionList';
 
 it('renders', () => {
   render(<AllocationList/>)

@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import BudgetList from './BudgetList';
+import Homepage from './Homepage';
 
 it('renders', () => {
-  render(<BudgetList/>)
+  render(<Homepage/>)
 });
 it('renders without crashing', () => {
-  const {asFragment} = render(<BudgetList/>)
+  const {asFragment} = render(<Homepage/>)
 
-  expect(asFragment).toMatchSnapshot(<BudgetList/>)
+  expect(asFragment).toMatchSnapshot(<Homepage/>)
 });
