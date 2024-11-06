@@ -21,13 +21,15 @@ async function commonBeforeAll() {
   const resultUser = await db.query(`
         INSERT INTO users(first_name, last_name, username, email, password, is_admin)
         VALUES ( 'testF', 'testL', 'testUser', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', true),
-              ( 'testF2', 'testL2', 'testUser2', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', true)
+              ( 'testF2', 'testL2', 'testUser2', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', false),
+              ( 'testF3', 'testL3', 'testUser3', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', false)
         RETURNING id`);
 
   testUserIds.splice(0, 0, ...resultUser.rows.map((u: { id: number }) => u.id));
 
-  u1token = createToken({id: testUserIds[0], username: "testUser1", isAdmin: true})
-  u2token = createToken({id: testUserIds[1], username: "testUser2", isAdmin: false})
+  u1token = createToken({id: testUserIds[0], username: "testUser1", isAdmin: true});
+  u2token = createToken({id: testUserIds[1], username: "testUser2", isAdmin: false});
+  u3token = createToken({id: testUserIds[2], username: "testUser3", isAdmin: false});
 
   const resultCategory = await db.query(
     `
@@ -68,7 +70,7 @@ async function commonBeforeAll() {
     INSERT INTO allocations(amount, subcategory_id, budget_id)
     VALUES(200, ${testSubcategoryIds[0]}, ${testBudgetIds[0]}),
           (500, ${testSubcategoryIds[1]}, ${testBudgetIds[1]}),
-          (770, ${testSubcategoryIds[1]}, ${testBudgetIds[1]})
+          (770, ${testSubcategoryIds[1]}, ${testBudgetIds[2]})
     RETURNING id`);
 
   testAllocationIds.splice(0, 0, ...resultAllocations.rows.map((a: { id: number }) => a.id));
@@ -88,6 +90,7 @@ async function commonAfterAll() {
 
 let u1token;
 let u2token;
+let u3token;
 
 export {
   commonBeforeAll,
@@ -101,5 +104,6 @@ export {
   testBudgetDates,
   testAllocationIds,
   u1token,
-  u2token
+  u2token,
+  u3token
 };

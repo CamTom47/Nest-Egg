@@ -3,7 +3,6 @@ import { BadRequestError, NotFoundError } from '../../../src/ExpressError';
 import bcrypt from 'bcrypt';
 import { BCRYPT_WORK_FACTOR } from '../../../config';
 import sqlForPartialUpdate from '../../helpers/sql';
-import { timeStamp } from 'console';
 
 interface NewUser {
   first_name: string;
@@ -65,9 +64,7 @@ class User {
     const user = result.rows[0];
 
     if (user) {
-      console.log(password, user.password);
       const isValid = await bcrypt.compare(password, user.password);
-      console.log(isValid);
       if (isValid === true) {
         delete user.password;
         return user;

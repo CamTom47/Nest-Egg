@@ -1,9 +1,9 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
+    first_name TEXT,
+    last_name TEXT ,
     username TEXT UNIQUE NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT,
     password TEXT NOT NULL,
     is_admin BOOLEAN NOT NULL,
     date_created TIMESTAMP DEFAULT now()

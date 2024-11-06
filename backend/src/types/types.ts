@@ -41,4 +41,14 @@ export interface UpdateUser {
   password?: string;
   is_admin?: boolean;
 }
+export interface NewAllocation {
+  amount: number;
+  subcategory_id: number;
+  budget_id: number;
+}
+export interface UpdateAllocation {
+  amount?: number;
+  subcategory_id?: number;
+  budget_id?: number;
+}
 

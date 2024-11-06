@@ -1,3 +1,4 @@
+import { join } from 'path';
 import db from '../../../db';
 import { ExpressError, NotFoundError, BadRequestError, UnauthorizedError } from '../../ExpressError';
 import sqlForPartialUpdate from '../../helpers/sql';
@@ -7,7 +8,8 @@ interface NewAllocation {
   subcategory_id: number;
   budget_id: number;
 }
-interface UpdateAllocation {
+interface Allocation {
+  user_id?: number;
   amount?: number;
   subcategory_id?: number;
   budget_id?: number;
@@ -21,11 +23,13 @@ class Allocation {
    * @returns [subcategories]
    */
 
-  static async findAll(budget_id: number | undefined = undefined): Promise<{}> {
+  static async findAll(user_id: number | undefined = undefined, budget_id: number | undefined = undefined): Promise<{}> {
     let query: string = `
-            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId"
-            FROM allocations
-            `;
+            SELECT allocations.id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", users.id AS "userId" 
+            FROM allocations    
+            JOIN budgets
+            ON allocations.budget_id = budgets.id
+            JOIN users ON budgets.user_id = users.id`;
 
     let whereExpressions: string[] = [];
     let queryValues: any[] = [];
@@ -34,34 +38,39 @@ class Allocation {
       queryValues.push(budget_id);
       whereExpressions.push(`budget_id = $${queryValues.length}`);
     }
+    if (user_id !== undefined) {
+      queryValues.push(user_id);
+      whereExpressions.push(`users.id = $${queryValues.length}`);
+    }
 
+    let allocations: {}[] = []
+    
     if (whereExpressions.length > 0) {
-      whereExpressions.length < 1
-        ? (query += '\n WHERE ' + whereExpressions)
-        : (query += '\n WHERE ' + whereExpressions.join(' OR '));
+      whereExpressions.length > 1 ? (query += '\n WHERE ' + whereExpressions.join(' AND ')) : (query += '\n WHERE ' + whereExpressions)
       let result: { rows: [] } = await db.query(query, queryValues);
-      let allocations: {}[] = result.rows;
-      return allocations;
+      allocations = result.rows;
     } else {
       let result = await db.query(query);
-      let allocations = result.rows;
-      return allocations;
+      allocations = result.rows;
     }
+    return allocations;
   }
 
   static async findById(allocation_id: number): Promise<{}> {
     let result: { rows: {}[] } = await db.query(
       `
-            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId"
-            FROM allocations
-            WHERE id = $1`,
+            SELECT allocations.id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", u.id AS "userId" 
+            FROM allocations 
+            JOIN budgets 
+            ON allocations.budget_id = budgets.id 
+            JOIN users AS u 
+            ON budgets.user_id = u.id
+            WHERE allocations.id = $1`,
       [allocation_id]
     );
 
     let subcategory: {} | undefined = result.rows[0];
-
     if (!subcategory) return NotFoundError;
-
     return subcategory;
   }
 
