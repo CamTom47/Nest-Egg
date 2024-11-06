@@ -1,0 +1,43 @@
+:root{
+  /* Main Colors - Used for links, button background color, etc. */
+  --color-primary: hsl(23, 50%, 97%);
+
+  /* Accent color - Used to highlight something important on a page, not a variant of primary color, but complimentary */
+
+  --color-secondary1-light: hsl(28, 99%, 81%);
+  --color-secondary1: hsl(28, 99%, 71%);
+  --color-secondary1-dark: hsl(28, 99%, 61%);
+
+  --color-secondary2-light: hsl(186, 79%, 66%);
+  --color-secondary2: hsl(186, 79%, 56%);
+  --color-secondary2-dark: hsl(186, 79%, 46%);
+
+  --color-secondary3-light: hsl(220, 19%, 55%);
+  --color-secondary3: hsl(220, 19%, 45%);
+  --color-secondary3-dark: hsl(220, 19%, 35%);
+
+  /* Shades - Neutral colors used for text elemnts, subtle elemtns, borders, etc. */
+  --black: black
+  --gray-10: hsl(0, 0%, 5%);
+  --gray-9: hsl(0, 0%, 10%);
+  --gray-8: hsl(0, 0%, 20%);
+  --gray-6: hsl(0, 0%, 40%);
+  --gray-4: hsl(0, 0%, 60%);
+  --gray-2: hsl(0, 0%, 80%);
+  --gray-1: hsl(0, 0%, 90%);
+  --white: white;
+
+  /* Feedback Colors - Success, Error, Warning */
+  --color-success: hsl(94, 72%, 30%);
+  --color-error: hsl(8, 71%, 47%);
+  --color-warning: hsl(190, 73%, 46%);
+
+}
+
+.App{
+  width: 100vw;
+}
+
+body{
+  background-color: var(--color-primary);
+}
