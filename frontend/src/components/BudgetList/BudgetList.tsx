@@ -1,7 +1,7 @@
 import React from 'react';
 import './BudgetList.css';
 
-function BudgetList() {
+const BudgetList = (): React.JSX.Element => {
   return (
     <div className="BudgetList">
       

@@ -1,0 +1,12 @@
+#Navbar{
+    position: sticky;
+    top: 0;
+}
+
+.Navbar-header{
+
+    background: var(--color-secondary3);
+    display: flex;
+    justify-content: space-around;
+    color: var(--color-secondary1)
+}

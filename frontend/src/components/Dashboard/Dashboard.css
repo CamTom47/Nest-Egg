@@ -1,0 +1,9 @@
+.Dashboard{
+    display: flex;
+    flex-direction: column;
+    margin: 0 10rem 0 10rem;
+}
+.Dashboard-cards{
+    display: flex;
+    justify-content: space-between;
+}

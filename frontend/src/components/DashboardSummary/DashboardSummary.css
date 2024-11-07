@@ -1,0 +1,28 @@
+.DashboardSummary{
+    margin-top: 5rem;
+}
+.Dashboard-tabs{
+    display: flex;
+}
+.Dashboard-tab{
+    background: var(--color-secondary3);
+    padding: 0 1rem 0 1rem;
+}
+.Dashboard-body{
+    background: var(--color-secondary3);
+    height: 75vh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 1rem 1rem 1rem;
+    box-shadow: 0 .25rem 5px var(--gray-6);
+
+}
+#tab1{
+    border-radius: 1rem 0 0 0;
+}
+#tab3{
+    border-radius: 0 1rem 0 0;
+}
+#tab1.active{
+    background: var(--color-secondary3-light);
+}

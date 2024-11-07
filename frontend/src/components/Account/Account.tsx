@@ -1,7 +1,7 @@
 import React from 'react';
 import './Account.css';
 
-function Account() {
+const Account = (): React.JSX.Element => {
   return (
     <div className="Account">
       

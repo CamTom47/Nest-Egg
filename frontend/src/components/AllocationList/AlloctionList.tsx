@@ -1,7 +1,7 @@
 import React from 'react';
 import './AllocationList.css';
 
-function AllocationList() {
+const AllocationList = (): React.JSX.Element => {
   return (
     <div className="AllocationList">
       

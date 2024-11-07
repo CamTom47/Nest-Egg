@@ -1,0 +1,7 @@
+.cardbody{
+    background: var(--color-secondary3-light);
+    width: 20rem;
+    height: 20rem;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem 5px var(--gray-6);
+}
