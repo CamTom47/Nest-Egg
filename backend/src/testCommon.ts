@@ -34,11 +34,11 @@ async function commonBeforeAll() {
 
   const resultCategory = await db.query(
     `
-        INSERT INTO categories(user_id, name, description, system_default)
-        VALUES ($1, 'testCategory', 'test description 1', true),
-              ($1, 'testCategory2', 'test description 2', true),
-              ($2, 'testCategory3', 'test description 3', false),
-              ($1, 'testCategory3', 'test description 3', false)
+        INSERT INTO categories(user_id, name, system_default)
+        VALUES ($1, 'testCategory', true),
+              ($1, 'testCategory2', true),
+              ($2, 'testCategory3', false),
+              ($1, 'testCategory3', false)
               RETURNING id`,
     [testUserIds[0], testUserIds[1]]
   );
@@ -47,10 +47,10 @@ async function commonBeforeAll() {
 
   const resultSubcategory = await db.query(
     `
-    INSERT INTO subcategories(name, description, category_id, user_id, system_default)
-    VALUES ('testSubcategory', 'test description 1', $1, $3, true),
-    ('testSubcategory2', 'test description 2', $1, $3, true),
-    ('testSubcategory3', 'test description 3', $2, $4, false)
+    INSERT INTO subcategories(name, category_id, user_id, system_default)
+    VALUES ('testSubcategory', $1, $3, true),
+    ('testSubcategory2', $1, $3, true),
+    ('testSubcategory3', $2, $4, false)
     RETURNING id`,
     [testCategoryIds[0], testCategoryIds[1], testUserIds[0], testUserIds[1]]
   );
@@ -113,7 +113,7 @@ export {
   testBudgetIds,
   testBudgetDates,
   testAllocationIds,
-  testContributorIds
+  testContributorIds,
   u1token,
   u2token,
   u3token

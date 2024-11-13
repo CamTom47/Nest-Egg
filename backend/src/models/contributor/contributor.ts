@@ -20,9 +20,8 @@ class Contributor {
 
 	static async findAll(user_id: number | undefined = undefined): Promise<{}> {
 		let query: string = `
-            SELECT id, name
-            FROM contributors
-            `;
+            SELECT id, name, user_id AS "userId"
+            FROM contributors`;
 
 		let whereExpressions: string[] = [];
 		let queryValues: any[] = [];
@@ -45,7 +44,7 @@ class Contributor {
 	static async findById(contributor_id: number): Promise<{}> {
 		let result: { rows: {}[] } = await db.query(
 			`
-            SELECT id, name
+            SELECT id, name, user_id AS "userId"
             FROM contributors
             WHERE id = $1`,
 			[contributor_id]
@@ -53,7 +52,7 @@ class Contributor {
 
 		let contributor: {} | undefined = result.rows[0];
 
-		if (contributor === undefined) throw new NotFoundError();
+		if (contributor === undefined) return new NotFoundError();
 
 		return contributor;
 	}
@@ -89,7 +88,7 @@ class Contributor {
 		const result = await db.query(querySql, [...values, id]);
 		const contributor = result.rows[0];
 
-		if (!contributor) throw new NotFoundError(`Contributor not found: invalid ID`);
+		if (!contributor) return new NotFoundError(`Contributor not found: invalid ID`);
 
 		return contributor;
 	}

@@ -20,39 +20,30 @@ describe('findAll', function () {
   test('works for system default contributors', async function () {
     let contributors = await Contributor.findAll();
     expect(contributors).toEqual([
-      { id: expect.any(Number), user_id: testContributorIds[0], name: "testContributor1"},
-      { id: expect.any(Number), user_id: testContributorIds[1], name: "testContributor2"},
-      { id: expect.any(Number), user_id: testContributorIds[1], name: "testContributor3"},
+      { id: expect.any(Number), userId: testUserIds[0], name: "testContributor1"},
+      { id: expect.any(Number), userId: testUserIds[1], name: "testContributor2"},
+      { id: expect.any(Number), userId: testUserIds[1], name: "testContributor3"},
     ]);
   });
 
   test('works for finding by userId', async function () {
     let contributors = await Contributor.findAll(testUserIds[1]);
     expect(contributors).toEqual([
-      { id: expect.any(Number), name: 'testCategory', description: 'test description 1' },
-      { id: expect.any(Number), name: 'testCategory2', description: 'test description 2' },
-      { id: expect.any(Number), name: 'testCategory3', description: 'test description 3' },
-    ]);
-  });
-
-  test('fails for invalid userId parameter and only returns default contributors', async function () {
-    let contributors = await Contributor.findAll(testUserIds[99]);
-    expect(contributors).toEqual([
-      { id: expect.any(Number), name: 'testCategory', description: 'test description 1' },
-      { id: expect.any(Number), name: 'testCategory2', description: 'test description 2' },
+      { id: expect.any(Number), userId: testUserIds[1], name: "testContributor2"},
+      { id: expect.any(Number), userId: testUserIds[1], name: "testContributor3"}
     ]);
   });
 });
 
 describe('findById', function () {
   test('works', async function () {
-    let contributor = await Contributor.findById(testCategoryIds[0]);
-    expect(contributor).toEqual({ id: expect.any(Number), name: 'testCategory', description: 'test description 1' });
+    let contributor = await Contributor.findById(testContributorIds[0]);
+    expect(contributor).toEqual({ id: expect.any(Number), userId: testUserIds[0], name: "testContributor1"});
   });
 
-  test('NotFoundError when invalid category_id', async function () {
-    let contributor = await Contributor.findById(testCategoryIds[99]);
-    expect(contributor).toEqual(NotFoundError);
+  test('NotFoundError when invalid contributor_id', async function () {
+    let contributor = await Contributor.findById(testContributorIds[99]);
+    expect(NotFoundError);
   });
 });
 
@@ -72,6 +63,7 @@ describe('create', () => {
     expect(newContributor).toEqual({
       id: expect.any(Number),
       name: 'newContributor',
+      userId: testUserIds[0]
     });
   });
 });
@@ -86,10 +78,11 @@ describe('update', () => {
       name: 'updateContributor',
     };
 
-    let updateContributor = await Contributor.update(testCategoryIds[0], data);
+    let updateContributor = await Contributor.update(testContributorIds[0], data);
     expect(updateContributor).toEqual({
       id: expect.any(Number),
-      name: 'updateContributor'
+      name: 'updateContributor',
+      userId: testUserIds[0]
     });
   });
 
@@ -98,19 +91,19 @@ describe('update', () => {
       name: 'updateContributor',
     };
 
-    await Contributor.update(testCategoryIds[9], data);
+    await Contributor.update(testContributorIds[9], data);
     expect(NotFoundError);
   });
 });
 
 describe('delete', () => {
   test('works', async () => {
-    let response: { message?: string } = await Contributor.delete(testCategoryIds[0]);
+    let response: { message?: string } = await Contributor.delete(testContributorIds[0]);
     expect(response.message).toEqual('Contributor Deleted');
   });
 
   test('throws errow with invalid contributor id', async () => {
-    await Contributor.delete(testCategoryIds[99]);
+    await Contributor.delete(testContributorIds[99]);
     expect(NotFoundError);
   });
 });
