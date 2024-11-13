@@ -51,4 +51,10 @@ export interface UpdateAllocation {
   subcategory_id?: number;
   budget_id?: number;
 }
+export interface NewContributor {
+  name: string
+}
+export interface UpdateContributor {
+  name?: string;
+}
 

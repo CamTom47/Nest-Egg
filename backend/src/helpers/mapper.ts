@@ -34,6 +34,10 @@ let allocationMap = {
 	subcategoryId: "subcategory_id",
 	budgetId: "budget_id",
 };
+let contributorMap = {
+	name: "name",
+	userId: "user_id"
+};
 
 /**
  * Mapper function that ensure that data being passed from frontend to backend queries is changed from camelCase to snake_case to adhere to sql query syntax.
@@ -63,14 +67,15 @@ const mapper = (data: {}, type: string) => {
 		case "allocation":
 			map = allocationMap;
 			break;
+		case "contributor":
+			map = contributorMap;
+			break;
 	}
-	console.log(map);
 
 	const keyValues = Object.entries(data);
 	let mappedObj = {};
 
 	for (let [key, value] of keyValues) {
-		console.log(key, value);
 		mappedObj[map[key]] = value;
 	}
 

@@ -18,7 +18,7 @@ class Contributor {
 	 * @returns [contributors]
 	 */
 
-	static async findAll(user_id: number | undefined = undefined): Promise<{}> {
+	static async findAll({user_id = undefined}: {user_id: number | undefined}): Promise<{}> {
 		let query: string = `
             SELECT id, name, user_id AS "userId"
             FROM contributors`;
@@ -37,6 +37,8 @@ class Contributor {
 
 		let result: { rows: [] } = await db.query(query, queryValues);
 		let contributors: {}[] = result.rows;
+
+		if(contributors.length === 0) return new NotFoundError(`No contributors are associated with User ID: ${user_id}`)
 
 		return contributors;
 	}
@@ -88,7 +90,7 @@ class Contributor {
 		const result = await db.query(querySql, [...values, id]);
 		const contributor = result.rows[0];
 
-		if (!contributor) return new NotFoundError(`Contributor not found: invalid ID`);
+		if (!contributor) return new NotFoundError(`Contributor not found: ${id}`);
 
 		return contributor;
 	}
