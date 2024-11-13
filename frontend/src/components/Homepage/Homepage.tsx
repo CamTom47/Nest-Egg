@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Homepage.css';
 
 
@@ -10,6 +11,8 @@ const Homepage = (): React.JSX.Element => {
     <div className="Homepage">
 
       <LoginForm/>
+      <p>New to Nest Egg?</p>
+      <p>Signup <Link to="/register">here</Link></p>
       
     </div>
   );

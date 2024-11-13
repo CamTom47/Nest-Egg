@@ -1,38 +1,38 @@
 let categoryMap = {
-  name: 'name',
-  description: 'description',
-  userId: 'user_id',
-  systemDefault: 'system_default',
+	name: "name",
+	description: "description",
+	userId: "user_id",
+	systemDefault: "system_default",
 };
 
 let subcategoryMap = {
-  name: 'name',
-  description: 'description',
-  userId: 'user_id',
-  categoryId: 'category_id',
-  systemDefault: 'system_default',
+	name: "name",
+	description: "description",
+	userId: "user_id",
+	categoryId: "category_id",
+	systemDefault: "system_default",
 };
 
 let budgetMap = {
-  name: 'name',
-  description: 'description',
-  userId: 'user_id',
+	name: "name",
+	description: "description",
+	userId: "user_id",
 };
 
 let userMap = {
-   firstName: "first_name",
-   lastName: "last_name",
-   username: "username",
-   email: "email",
-   password: "password",
-   isAdmin: "is_admin",
-   dateCreated: "date_created"
+	firstName: "first_name",
+	lastName: "last_name",
+	username: "username",
+	email: "email",
+	password: "password",
+	isAdmin: "is_admin",
+	dateCreated: "date_created",
 };
 
 let allocationMap = {
-   amount: "amount",
-   subcategoryId: "subcategory_id",
-   budgetId: "budget_id"
+	amount: "amount",
+	subcategoryId: "subcategory_id",
+	budgetId: "budget_id",
 };
 
 /**
@@ -42,29 +42,39 @@ let allocationMap = {
  */
 
 const mapper = (data: {}, type: string) => {
-  let map = {};
-  switch (type) {
-    case 'category':
-      map = categoryMap;
+	let map = {};
+	switch (type) {
+		case "category":
+			map = categoryMap;
+			break;
 
-    case 'subcategory':
-      map = subcategoryMap;
-    case 'budget':
-      map = budgetMap;
-    case 'user':
-      map = userMap
-    case 'allocation':
-      map = allocationMap
-  }
+		case "subcategory":
+			map = subcategoryMap;
+			break;
 
-  const keyValues = Object.entries(data);
-  let mappedObj = {};
+		case "budget":
+			map = budgetMap;
+			break;
 
-  for (let [key, value] of keyValues) {
-    mappedObj[map[key]] = value;
-  }
+		case "user":
+			map = userMap;
+			break;
 
-  return mappedObj;
+		case "allocation":
+			map = allocationMap;
+			break;
+	}
+	console.log(map);
+
+	const keyValues = Object.entries(data);
+	let mappedObj = {};
+
+	for (let [key, value] of keyValues) {
+		console.log(key, value);
+		mappedObj[map[key]] = value;
+	}
+
+	return mappedObj;
 };
 
 export default mapper;

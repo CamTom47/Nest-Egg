@@ -3,20 +3,34 @@ import { BadRequestError, NotFoundError } from '../../ExpressError';
 import sqlForPartialUpdate from '../../helpers/sql';
 
 interface NewBudget {
-  user_id: number;
   name: string;
   description: string;
+  user_id: number;
 }
 interface UpdateBudget {
   name?: string;
   description?: string;
+  user_id?: number;
 }
 
 class Budget {
   static async findAll(): Promise<{}> {
     const result = await db.query(`
-            SELECT id, user_id AS "userId", name, description, date_created AS "dateCreated"
-            FROM budgets`);
+            SELECT id, 
+            user_id AS "userId",
+             name,
+             description,
+             SUM(allocation) AS "totalIncome",
+             total_expense AS "totalExpense",
+             net AS "netAmount",
+             COUNT(bc) AS "numContributors",
+             date_created AS "dateCreated,"
+            FROM budgets
+            JOIN allocations AS a
+            ON budget.id = allocations.budget_id
+            JOIN budgets_contributors AS bc
+            ON budget.id = bc.budget_id
+            `);
 
     const budgets = result.rows;
     return budgets;
@@ -25,8 +39,20 @@ class Budget {
   static async findById(budget_id: number): Promise<{}> {
     const result = await db.query(
       `
-            SELECT id, user_id AS "userId", name, description, date_created AS "dateCreated"
+            SELECT id, 
+            user_id AS "userId",
+             name,
+             description,
+             SUM(allocation) AS "totalIncome",
+             total_expense AS "totalExpense",
+             net AS "netAmount",
+             COUNT(bc) AS "numContributors",
+             date_created AS "dateCreated,"
             FROM budgets
+            JOIN allocations AS a
+            ON budget.id = allocations.budget_id
+            JOIN budgets_contributors AS bc
+            ON budget.id = bc.budget_id
             WHERE id = $1`,
       [budget_id]
     );
@@ -39,7 +65,6 @@ class Budget {
   }
 
   static async create({ user_id, name, description }: NewBudget) {
-    console.log(user_id)
     const result = await db.query(
       `
             INSERT INTO budgets(user_id, name, description)
@@ -50,6 +75,7 @@ class Budget {
 
     const budget = result.rows[0];
     if (!budget) return new BadRequestError('Invalid Data');
+    
     return budget;
   }
 

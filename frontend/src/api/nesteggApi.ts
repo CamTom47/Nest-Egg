@@ -1,14 +1,6 @@
-import axios, {
-  Axios,
-  AxiosHeaders,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosResponseHeaders,
-  RawAxiosRequestHeaders,
-} from 'axios';
-import { AxiosError } from 'axios';
+import axios, {AxiosError, AxiosResponse} from "axios";
 
-const BASE_URL: string = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+const BASE_URL: string = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
 class NestEggApi {
   /** NestEgg API Class
@@ -24,13 +16,13 @@ class NestEggApi {
 
     const url: string = `${BASE_URL}/${endpoint}`;
     const params = method === 'get' ? data : {};
-    const headers: {} | undefined =
-      NestEggApi.token !== '' ? { Authorization: `Bearer ${NestEggApi.token}` } : undefined;
+    const headers : {} | undefined = (NestEggApi.token !== "") ? { Authorization: `Bearer ${NestEggApi.token}` } : undefined;
+
 
     try {
-      const response = await axios({ url, params, method, headers, data }).data;
+      const response = (await axios({ url, params, method, data, headers })).data;
       return response;
-    } catch (err: AxiosError) {
+    } catch (err: any) {
       console.error('API Error', err.response);
       let message: string = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
@@ -41,24 +33,27 @@ class NestEggApi {
    * Authenticate a user and login to application
    * @params {data}
    * {data: {username, password}}
-   * @returns {user}
+   * @returns {token}
    */
 
-  static async login<Promise>(data: {username: string, password: string}): Promise {
-    let res = await this.request('/auth/token', data, 'post');
-    return res.user;
+  static async login<Promise>(data: { username: string; password: string }): Promise {
+    let res = await this.request('auth/login', data, 'post');
+    return res.token;
   }
 
   /**
    * Register a new user
    * @params {data}
-   * {data: {username, password, firstName, lastName, email}}
-   * @returns {user}
+   * {data: {username, password}}
+   * @returns {token}
    */
 
-  static async register<Promise>(data: {username: string, password: string, firstName: string, lastName: string, email: string}): Promise {
-    let res = await this.request('/auth/register', data, 'post');
-    return res.user;
+  static async register<Promise>(data: {
+    username: string;
+    password: string;
+  }): Promise {
+    let res = await this.request('auth/register', data, 'post');
+    return res.token;
   }
 
   //Indivual NestEgg API Routes for normal users
@@ -69,7 +64,7 @@ class NestEggApi {
    */
 
   static async findAllUsers<Promise>(): Promise {
-    let res = await this.request('/users');
+    let res = await this.request('users/');
     return res.users;
   }
 
@@ -113,7 +108,6 @@ class NestEggApi {
     return res.user;
   }
 
-
   //Category Methods
 
   /**
@@ -122,7 +116,7 @@ class NestEggApi {
    */
 
   static async findAllCategories<Promise>(): Promise {
-    let res = await this.request('/categories');
+    let res = await this.request('categories/');
     return res.categories;
   }
 
@@ -133,7 +127,7 @@ class NestEggApi {
    * @returns {category}
    */
   static async findCategory<Promise>(data: { categoryId: number }): Promise {
-    let res = await this.request(`/categories/${data.categoryId}`, data, 'get');
+    let res = await this.request(`categories/${data.categoryId}`, data, 'get');
     return res.category;
   }
 
@@ -143,8 +137,8 @@ class NestEggApi {
    * {data: {name, description}}
    * @returns {category}
    */
-  static async createCategory<Promise>(data: {userId: number, name: string, description: string }): Promise {
-    let res = await this.request(`/categories`, data, 'post');
+  static async createCategory<Promise>(data: { userId: number; name: string; description: string }): Promise {
+    let res = await this.request(`categories/`, data, 'post');
     return res.category;
   }
 
@@ -183,7 +177,7 @@ class NestEggApi {
    */
 
   static async findAllSubcategories<Promise>(): Promise {
-    let res = await this.request('/subcategories');
+    let res = await this.request('subcategories/');
     return res.subcategories;
   }
 
@@ -194,7 +188,7 @@ class NestEggApi {
    * @returns {subcategory}
    */
   static async findSubcategory<Promise>(data: { subcategoryId: number }): Promise {
-    let res = await this.request(`/subcategories/${data.subcategoryId}`, data, 'get');
+    let res = await this.request(`subcategories/${data.subcategoryId}`, data, 'get');
     return res.subcategory;
   }
 
@@ -204,8 +198,8 @@ class NestEggApi {
    * {data: {userId, name, description}}
    * @returns {subcategory}
    */
-  static async createSubategory<Promise>(data: {userId: number, name: string, description: string }): Promise {
-    let res = await this.request(`/subcategories`, data, 'post');
+  static async createSubategory<Promise>(data: { userId: number; name: string; description: string }): Promise {
+    let res = await this.request(`subcategories/`, data, 'post');
     return res.subcategory;
   }
 
@@ -236,7 +230,6 @@ class NestEggApi {
     return res.subcategory;
   }
 
-
   //Allocation Methods
 
   /**
@@ -245,7 +238,7 @@ class NestEggApi {
    */
 
   static async findAllAllocations<Promise>(): Promise {
-    let res = await this.request('/subcategories');
+    let res = await this.request('allocations/');
     return res.allocations;
   }
 
@@ -256,7 +249,7 @@ class NestEggApi {
    * @returns {allocation}
    */
   static async findAllocation<Promise>(data: { allocationId: number }): Promise {
-    let res = await this.request(`/allocations/${data.allocationId}`, data, 'get');
+    let res = await this.request(`allocations/${data.allocationId}`, data, 'get');
     return res.allocation;
   }
 
@@ -266,8 +259,8 @@ class NestEggApi {
    * {data: {amount, subcategoryId, budgetId}}
    * @returns {allocation}
    */
-  static async createAllocation<Promise>(data: {amount: number, subcategoryId: number, budgetId: number }): Promise {
-    let res = await this.request(`/allocations`, data, 'post');
+  static async createAllocation<Promise>(data: { amount: number; subcategoryId: number; budgetId: number }): Promise {
+    let res = await this.request(`allocations`, data, 'post');
     return res.allocation;
   }
 
@@ -278,7 +271,7 @@ class NestEggApi {
    * @returns {subcategory}
    */
   static async updateAllocation<Promise>(data: {
-    allocationId: number
+    allocationId: number;
     amount?: number;
     subcategoryId?: number;
     budgetId?: number;
@@ -297,6 +290,68 @@ class NestEggApi {
     let res = await this.request(`allocations/${data.allocationId}`, data, 'delete');
     return res.allocation;
   }
+
+  //Budget Methods
+
+  /**
+   * Return all system default and user created budgets to a user.
+   * @returns {budgets}
+   */
+
+  static async findAllBudgets<Promise> (): Promise {
+    let res = await this.request('budgets/');
+    return res.budgets;
+  }
+
+  /**
+   * Find an allocation by its Id
+   * @params {data}
+   * {data: {allocationId}}
+   * @returns {allocation}
+   */
+  static async findBudget<Promise>(data: { budgetId: number }): Promise {
+    let res = await this.request(`budgets/${data.budgetId}`, data, 'get');
+    return res.budget;
+  }
+
+  /**
+   * Create a new budget
+   * @params {data}
+   * {data: {amount, subcategoryId, budgetId}}
+   * @returns {budget}
+   */
+  static async createBudget<Promise>(data: { userId: number; name: string; description: string }): Promise {
+    let res = await this.request(`budgets/`, data, 'post');
+    return res.budget;
+  }
+
+  /**
+   * Update an budget
+   * @params {data}
+   * {data: {name, description}}
+   * @returns {subcategory}
+   */
+  static async updateBudget<Promise>(userId: number, data: {
+    budgetId: number;
+    name?: string;
+    description?: string;
+  }): Promise {
+    let res = await this.request(`budgets/${data.budgetId}?userId${userId}`, data, 'patch');
+    return res.budget;
+  }
+
+  /**
+   * Delete an budget from the application
+   * @params {data}
+   * {data: {budgetId}}
+   * @returns {message: "Subcategory Deleted"}
+   */
+  static async deleteBudget<Promise>(userId: number, data: { budgetId: number }): Promise {
+    let res = await this.request(`budgets/${data.budgetId}?userId${userId}`, data, 'delete');
+    return res.budget;
+  }
 }
+
+NestEggApi.token = ""
 
 export default NestEggApi;

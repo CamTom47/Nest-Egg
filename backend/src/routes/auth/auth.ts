@@ -7,6 +7,7 @@ import User from '../../models/user/user';
 import mapper from '../../helpers/mapper';
 
 import { BadRequestError } from '../../ExpressError';
+import createToken from '../../helpers/token';
 
 const router = express.Router();
 
@@ -19,8 +20,9 @@ router.post('/login', async function(req: Request, res: Response, next: NextFunc
             const errs = validator.errors.map( err => err.stack)
             throw new BadRequestError(errs)
         }
-        const user: {} = await User.authenticate(username, password);
-        return res.status(200).json({user});
+        const user = await User.authenticate(username, password);
+        const token = createToken(user)
+        return res.status(200).json({token});
 
     } catch(err){
         return next(err)
@@ -36,8 +38,10 @@ router.post('/register', async function(req: Request, res: Response, next: NextF
             throw new BadRequestError(errs)
         }
         
-        const user: {} = await User.register(data);
-        return res.status(201).json({user});
+        const newUser = await User.register(data);
+        const token = createToken(newUser)
+
+        return res.status(201).json({token});
 
     } catch(err){
         return next(err)

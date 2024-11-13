@@ -7,7 +7,6 @@ import budgetsRoutes from './routes/budgets/budgets';
 import usersRoutes from './routes/users/users'
 import authRoutes from './routes/auth/auth'
 import allocationsRoutes from './routes/allocations/allocations'
-import adminsRoutes from './routes/admins/admins'
 
 import dotenv from 'dotenv';
 import express, {Express} from 'express';
@@ -35,7 +34,6 @@ app.use("/budgets", budgetsRoutes);
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/allocations", allocationsRoutes);
-app.use("/admin", adminsRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   return next(new NotFoundError());

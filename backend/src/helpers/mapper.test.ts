@@ -39,4 +39,18 @@ describe('mapper helper function', () => {
         system_default: false
     })
   })
+
+  test('works with users', () => {
+    let data = {
+        username: 'testUser',
+        password: 'password'
+    }
+
+    const mappedData = mapper(data, 'user');
+
+    expect(mappedData).toEqual({
+        username: 'testUser',
+        password: 'password',
+    })
+  })
 })

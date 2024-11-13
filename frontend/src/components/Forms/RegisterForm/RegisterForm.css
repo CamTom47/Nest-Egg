@@ -1,0 +1,9 @@
+.RegisterForm{
+    background: var(--color-secondary3-light);
+    width: 75vw;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: 0 5px 5px var(--gray-4);
+}

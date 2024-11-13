@@ -1,12 +1,16 @@
-#Navbar{
-    position: sticky;
-    top: 0;
+.Navbar {
+	position: sticky;
+	top: 0;
 }
 
-.Navbar-header{
+.Navbar-header {
+	background: var(--color-secondary3);
+	display: flex;
+	justify-content: space-around;
+    height: 2rem;
+}
 
-    background: var(--color-secondary3);
-    display: flex;
-    justify-content: space-around;
-    color: var(--color-secondary1)
+.Navbar-link{
+    color: var(--color-secondary1);
+    text-decoration: none;
 }

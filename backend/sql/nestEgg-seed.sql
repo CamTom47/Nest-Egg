@@ -14,28 +14,44 @@ VALUES(
     'test@test.com',
     'testAdminpassword',
     true
-);
+    );
 
 INSERT INTO categories(
     name,
-    description,
     system_default
 )
 
 VALUES
-    ('Bills & Utilities', null, true),
-    ('Shopping', null, true),
-    ('Food', null, true),
-    ('Home', null, true),
-    ('Gas', null, true),
-    ('Travel', null, true),
-    ('Housing', null, true),
-    ('Transportation', null, true),
-    ('Clothing', null, true),
-    ('Medical/Healthcare', null, true),
-    ('Insurance', null, true),
-    ('Personal', null, true),
-    ('Debt', null, true),
-    ('Gifts/Donations', null, true),
-    ('Entertainment', null, true),
-    ('Other', null, true);
+    ('Income', true),
+    ('Bills & Utilities', true),
+    ('Shopping', true),
+    ('Food', true),
+    ('Home', true),
+    ('Gas', true),
+    ('Travel', true),
+    ('Housing', true),
+    ('Transportation', true),
+    ('Clothing', true),
+    ('Medical/Healthcare', true),
+    ('Insurance', true),
+    ('Personal', true),
+    ('Debt', true),
+    ('Gifts/Donations', true),
+    ('Entertainment', true),
+    ('Other', true);
+
+INSERT INTO subcategories(name, category_id, user_id, system_default)
+VALUES('Salary', 1, 1, true);
+
+INSERT INTO expense_types(name)
+VALUES('Needs'),
+        ('Wants'),
+        ('Savings');
+
+INSERT INTO expense_types(name)
+VALUES('Annual'),
+        ('Monthly'),
+        ('Weekly'),
+        ('Biweekly'),
+        ('Semi-monthly'),
+        ('Daily');

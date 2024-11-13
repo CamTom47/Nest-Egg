@@ -9,6 +9,7 @@ let testSubcategoryIds: number[] = [];
 let testBudgetIds: number[] = [];
 let testAllocationIds: number[] = [];
 let testBudgetDates: number[] = [];
+let testContributorIds: number[] = [];
 
 async function commonBeforeAll() {
 
@@ -74,6 +75,15 @@ async function commonBeforeAll() {
     RETURNING id`);
 
   testAllocationIds.splice(0, 0, ...resultAllocations.rows.map((a: { id: number }) => a.id));
+
+  const resultContributors = await db.query(`
+    INSERT INTO contributors(user_id, name)
+    VALUES(${testUserIds[0]}, 'testContributor1'),
+          (${testUserIds[1]}, 'testContributor2'),
+          (${testUserIds[1]}, 'testContributor3')
+    RETURNING id, user_id, name`);
+
+  testContributorIds.splice(0, 0, ...resultContributors.rows.map((a: { id: number }) => a.id));
 }
 
 async function commonBeforeEach() {
@@ -103,6 +113,7 @@ export {
   testBudgetIds,
   testBudgetDates,
   testAllocationIds,
+  testContributorIds
   u1token,
   u2token,
   u3token

@@ -17,7 +17,6 @@ function createToken({id, username, isAdmin}: Payload): {} {
         "username": username,
         "isAdmin": isAdmin || false
     }
-
     return jwt.sign(payload, SECRET_KEY)
 }
 
