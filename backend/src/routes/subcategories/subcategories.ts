@@ -14,7 +14,6 @@ const router = express.Router();
 interface SubcategoryModel {
   id?: number,
   name?: string,
-  description?: string,
   user_id?: number,
   category_id?: number,
   system_default?: boolean
