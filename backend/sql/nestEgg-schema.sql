@@ -14,8 +14,6 @@ CREATE TABLE budgets (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT,
-    total_income INTEGER,
-    total_expense INTEGER,
     date_created TIMESTAMP DEFAULT now()
 );
  

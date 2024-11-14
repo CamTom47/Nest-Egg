@@ -55,3 +55,7 @@ VALUES('Annual'),
         ('Biweekly'),
         ('Semi-monthly'),
         ('Daily');
+
+INSERT INTO allocation_types(name)
+VALUES('Income'),
+        ('Expense')

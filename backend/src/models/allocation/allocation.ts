@@ -129,8 +129,8 @@ class Allocation {
       WHERE id = ${allocationVarIdx}
       RETURNING id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", user_id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency`;
 
-		const result = await db.query(querySql, [...values, id]);
-		const allocation = result.rows[0];
+	  const result = await db.query(querySql, [...values, id]);
+	  const allocation = result.rows[0];
 
 		if (!allocation) return new NotFoundError(`Allocation not found: invalid ID`);
 

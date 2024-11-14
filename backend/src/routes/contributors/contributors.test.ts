@@ -95,7 +95,7 @@ describe("POST /", () => {
 			contributor: {
 				id: expect.any(Number),
 				name: "new contributor",
-				userId: testUserIds[0]
+				userId: testUserIds[0],
 			},
 		});
 
@@ -142,8 +142,8 @@ describe("PATCH /:contributor_id", () => {
 
 		const resp = await request(app).patch("/contributors/99999").set("authorization", `Bearer ${u1token}`).send(data);
 
-		expect(resp.body.contributor.message).toEqual("Contributor not found: 99999")
-		expect(resp.body.contributor.status).toEqual(404)
+		expect(resp.body.contributor.message).toEqual("Contributor not found: 99999");
+		expect(resp.body.contributor.status).toEqual(404);
 	});
 });
 

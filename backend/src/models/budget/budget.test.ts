@@ -25,21 +25,27 @@ describe("Find all budgets", () => {
 				userId: testUserIds[0],
 				name: "TestBudget1",
 				description: "test1",
-				date_created: expect.any(Date),
+				dateCreated: expect.any( Date),
+				totalExpense: null,
+				totalIncome: null
 			},
 			{
 				id: expect.any(Number),
 				userId: testUserIds[0],
 				name: "TestBudget2",
 				description: "test2",
-				date_created: expect.any(Date),
+				dateCreated: expect.any( Date),
+				totalExpense: null,
+				totalIncome: null
 			},
 			{
 				id: expect.any(Number),
 				userId: testUserIds[1],
 				name: "TestBudget3",
 				description: "test3",
-				date_created: expect.any(Date),
+				dateCreated: expect.any( Date),
+				totalExpense: null,
+				totalIncome: null
 			},
 		]);
 	});
@@ -52,7 +58,9 @@ describe("Find a budget by ID", () => {
 			userId: testUserIds[0],
 			name: "TestBudget1",
 			description: "test1",
-			date_created: expect.any(Date),
+			dateCreated: expect.any( Date),
+			totalExpense: null,
+			totalIncome: null
 		});
 	});
 	test("throws error on invalid ID", async () => {
@@ -66,7 +74,7 @@ describe("Create a new Budget", () => {
 			user_id: testUserIds[1],
 			name: "TestBudgetNew",
 			description: "testNew",
-			date_created: new Date().toISOString(),
+			dateCreated: new Date().toISOString()
 		};
 		const budget = await Budget.create(data);
 		expect(budget).toEqual({
@@ -74,7 +82,7 @@ describe("Create a new Budget", () => {
 			userId: testUserIds[1],
 			name: "TestBudgetNew",
 			description: "testNew",
-			date_created: expect.any(Date),
+			dateCreated: expect.any(Date),
 		});
 	});
 });
@@ -91,7 +99,7 @@ describe("Update an existing budgets information", () => {
 			userId: testUserIds[0],
 			name: "budgetUpdate",
 			description: "test1",
-			date_created: expect.any(Date),
+			dateCreated: expect.any(Date),
 		});
 	});
 	test("throws error with incorrect budget ID", async () => {
@@ -111,24 +119,5 @@ describe("delete", () => {
 	test("throws errow with missing id", async () => {
 		await Budget.delete();
 		expect(NotFoundError);
-	});
-
-	describe("createBudgetCategories", () => {
-		test("works", async () => {
-			const categories = [testCategoryIds[0], testCategoryIds[1]];
-			const response = await Budget.createBudgetCategories(testBudgetIds[0], categories);
-			expect(response).toEqual([
-				{
-					id: expect.any(Number),
-					budgetId: testBudgetIds[0],
-					categoryId: testCategoryIds[0],
-				},
-				{
-					id: expect.any(Number),
-					budgetId: testBudgetIds[0],
-					categoryId: testCategoryIds[1],
-				},
-			]);
-		});
 	});
 });

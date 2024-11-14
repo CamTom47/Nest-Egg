@@ -5,7 +5,12 @@
     "default": {},
     "title": "Update Allocation Schema",
     "required": [
-        "amount"
+        "amount",
+        "subcategory_id",
+        "allocation_type",
+        "category_id",
+        "expense_type",
+        "frequency"
     ],
     "properties": {
         "amount": {
@@ -15,11 +20,54 @@
             "examples": [
                 200.00
             ]
+        },
+        "subcategory_id": {
+            "type": "integer",
+            "default": 0,
+            "title": "The subcategory_id Schema",
+            "examples": [
+                1
+            ]
+        },
+        "allocation_type": {
+            "type": "integer",
+            "default": 0,
+            "title": "The allocation_type Schema",
+            "examples": [
+                2
+            ]
+        },
+        "category_id": {
+            "type": "integer",
+            "default": 0,
+            "title": "The category_id Schema",
+            "examples": [
+                2
+            ]
+        },
+        "expense_type": {
+            "type": "integer",
+            "default": 0,
+            "title": "The expense_type Schema",
+            "examples": [
+                2
+            ]
+        },
+        "frequency": {
+            "type": "integer",
+            "default": 0,
+            "title": "The frequency Schema",
+            "examples": [
+                2
+            ]
         }
     },
     "examples": [{
         "amount": 200.00,
         "subcategory_id": 1,
-        "budget_id": 2
+        "allocation_type": 1,
+        "category_id": 1,
+        "expense_type":1,
+        "frequency": 1
     }]
 }
