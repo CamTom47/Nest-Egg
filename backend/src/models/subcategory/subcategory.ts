@@ -4,14 +4,12 @@ import sqlForPartialUpdate from '../../helpers/sql';
 
 interface NewSubcategory {
   name: string;
-  description: string;
   category_id: number;
   user_id: number;
   system_default: boolean;
 }
 interface UpdateSubcategory {
   name?: string;
-  description?: string;
   category_id?: number;
   user_id?: number;
 }
@@ -26,7 +24,7 @@ class Subcategory {
 
   static async findAll(user_id: number | undefined = undefined): Promise<{}> {
     let query: string = `
-            SELECT id, name, description, category_id AS "categoryId", user_id AS "userId"
+            SELECT id, name, category_id AS "categoryId", user_id AS "userId"
             FROM subcategories
             `;
 
@@ -50,7 +48,7 @@ class Subcategory {
   static async findById(subcategory_id: number): Promise<{}> {
     let result: { rows: {}[] } = await db.query(
       `
-            SELECT id, name, description, category_id AS "categoryId", user_id AS "userId"
+            SELECT id, name, category_id AS "categoryId", user_id AS "userId"
             FROM subcategories
             WHERE id = $1`,
       [subcategory_id]
@@ -63,13 +61,13 @@ class Subcategory {
     return subcategory;
   }
 
-  static async create({ name, description, category_id, user_id, system_default = false }: NewSubcategory): Promise<{}> {
+  static async create({ name, category_id, user_id, system_default = false }: NewSubcategory): Promise<{}> {
     let result = await db.query(
       `
-      INSERT INTO subcategories ( name, description, category_id, user_id, system_default)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING id, name, description, category_id AS "categoryId", user_id AS "userId"`,
-      [name, description, category_id, user_id, system_default]
+      INSERT INTO subcategories ( name, category_id, user_id, system_default)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, name, category_id AS "categoryId", user_id AS "userId"`,
+      [name, category_id, user_id, system_default]
     );
 
     let subcategory = result.rows[0];
@@ -82,7 +80,6 @@ class Subcategory {
   static async update(id: number, data: UpdateSubcategory): Promise<{}> {
     const { setCols, values } = sqlForPartialUpdate(data, {
       name: 'name',
-      description: 'description',
       categoryId: 'category_id',
     });
 
@@ -91,7 +88,7 @@ class Subcategory {
     const querySql = `UPDATE subcategories
       SET ${setCols}
       WHERE id = ${categoryVarIdx}
-      RETURNING id, name, description, category_id AS "categoryId", user_id AS "userId"`;
+      RETURNING id, name, category_id AS "categoryId", user_id AS "userId"`;
 
     const result = await db.query(querySql, [...values, id]);
     const subcategory = result.rows[0];

@@ -1,7 +1,7 @@
-import db from '../db';
-process.env.NODE_ENV = 'test';
-import createToken from './helpers/token'
-import { jest } from '@jest/globals';
+import db from "../db";
+process.env.NODE_ENV = "test";
+import createToken from "./helpers/token";
+import { jest } from "@jest/globals";
 
 let testUserIds: number[] = [];
 let testCategoryIds: number[] = [];
@@ -10,92 +10,130 @@ let testBudgetIds: number[] = [];
 let testAllocationIds: number[] = [];
 let testBudgetDates: number[] = [];
 let testContributorIds: number[] = [];
+let testExpenseTypeIds: number[] = [];
+let testFrequencyIds: number[] = [];
+let testAllocationTypeIds: number[] = [];
 
 async function commonBeforeAll() {
+	await db.query("DELETE FROM categories");
+	await db.query("DELETE FROM users");
+	await db.query("DELETE FROM budgets");
+	await db.query("DELETE FROM subcategories");
+	await db.query("DELETE FROM allocations");
+	await db.query("DELETE FROM expense_types");
+	await db.query("DELETE FROM contributors");
+	await db.query("DELETE FROM frequencies");
+	await db.query("DELETE FROM allocation_types");
 
-  await db.query('DELETE FROM categories');
-  await db.query('DELETE FROM users');
-  await db.query('DELETE FROM budgets');
-  await db.query('DELETE FROM subcategories');
-  await db.query('DELETE FROM allocations');
-
-  const resultUser = await db.query(`
+	const resultUser = await db.query(`
         INSERT INTO users(first_name, last_name, username, email, password, is_admin)
         VALUES ( 'testF', 'testL', 'testUser', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', true),
               ( 'testF2', 'testL2', 'testUser2', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', false),
               ( 'testF3', 'testL3', 'testUser3', 'test@test.com', '$2a$04$swlC6Fmltw2.BQtiVe86k.WA53OBhcBs9o5iaTDhg3WJ4mz6Fq0pu', false)
         RETURNING id`);
 
-  testUserIds.splice(0, 0, ...resultUser.rows.map((u: { id: number }) => u.id));
+	testUserIds.splice(0, 0, ...resultUser.rows.map((u: { id: number }) => u.id));
 
-  u1token = createToken({id: testUserIds[0], username: "testUser1", isAdmin: true});
-  u2token = createToken({id: testUserIds[1], username: "testUser2", isAdmin: false});
-  u3token = createToken({id: testUserIds[2], username: "testUser3", isAdmin: false});
+	u1token = createToken({ id: testUserIds[0], username: "testUser1", isAdmin: true });
+	u2token = createToken({ id: testUserIds[1], username: "testUser2", isAdmin: false });
+	u3token = createToken({ id: testUserIds[2], username: "testUser3", isAdmin: false });
 
-  const resultCategory = await db.query(
-    `
+	const resultCategory = await db.query(
+		`
         INSERT INTO categories(user_id, name, system_default)
         VALUES ($1, 'testCategory', true),
               ($1, 'testCategory2', true),
               ($2, 'testCategory3', false),
               ($1, 'testCategory3', false)
               RETURNING id`,
-    [testUserIds[0], testUserIds[1]]
-  );
+		[testUserIds[0], testUserIds[1]]
+	);
 
-  testCategoryIds.splice(0, 0, ...resultCategory.rows.map((c: { id: number }) => c.id));
+	testCategoryIds.splice(0, 0, ...resultCategory.rows.map((c: { id: number }) => c.id));
 
-  const resultSubcategory = await db.query(
-    `
+	const resultSubcategory = await db.query(
+		`
     INSERT INTO subcategories(name, category_id, user_id, system_default)
     VALUES ('testSubcategory', $1, $3, true),
     ('testSubcategory2', $1, $3, true),
     ('testSubcategory3', $2, $4, false)
     RETURNING id`,
-    [testCategoryIds[0], testCategoryIds[1], testUserIds[0], testUserIds[1]]
-  );
+		[testCategoryIds[0], testCategoryIds[1], testUserIds[0], testUserIds[1]]
+	);
 
-  testSubcategoryIds.splice(0, 0, ...resultSubcategory.rows.map((s: { id: number }) => s.id));
+	testSubcategoryIds.splice(0, 0, ...resultSubcategory.rows.map((s: { id: number }) => s.id));
 
-  const resultBudgets = await db.query(`
+	const resultBudgets = await db.query(
+		`
     INSERT INTO budgets(user_id, name, description)
     VALUES($1,'TestBudget1', 'test1'),
     ($1, 'TestBudget2', 'test2'),
     ($2, 'TestBudget3', 'test3')
-    RETURNING id, date_created AS "dateCreated"`, [testUserIds[0], testUserIds[1]]);
+    RETURNING id, date_created AS "dateCreated"`,
+		[testUserIds[0], testUserIds[1]]
+	);
 
-  testBudgetIds.splice(0, 0, ...resultBudgets.rows.map((b: { id: number }) => b.id));
-  testBudgetDates.splice(0, 0, ...resultBudgets.rows.map((b: { dateCreated: Date }) => b.dateCreated.toISOString()));
+	testBudgetIds.splice(0, 0, ...resultBudgets.rows.map((b: { id: number }) => b.id));
+	testBudgetDates.splice(0, 0, ...resultBudgets.rows.map((b: { dateCreated: Date }) => b.dateCreated.toISOString()));
 
-  const resultAllocations = await db.query(`
-    INSERT INTO allocations(amount, subcategory_id, budget_id)
-    VALUES(200, ${testSubcategoryIds[0]}, ${testBudgetIds[0]}),
-          (500, ${testSubcategoryIds[1]}, ${testBudgetIds[1]}),
-          (770, ${testSubcategoryIds[1]}, ${testBudgetIds[2]})
+	const resultExpenseTypes = await db.query(`
+    INSERT INTO expense_types(name)
+    VALUES('Needs'),
+          ('Wants'),
+          ('Savings')
+          RETURNING id`);
+
+	testExpenseTypeIds.splice(0, 0, ...resultExpenseTypes.rows.map((e: { id: number }) => e.id));
+
+	const resultFrequencies = await db.query(`
+    INSERT INTO frequencies(name)
+    VALUES('Annual'),
+        ('Monthly'),
+        ('Weekly'),
+        ('Biweekly'),
+        ('Semi-monthly'),
+        ('Daily')
+        RETURNING id`);
+
+	testFrequencyIds.splice(0, 0, ...resultFrequencies.rows.map((f: { id: number }) => f.id));
+
+	const resultAllocationType = await db.query(`
+    INSERT INTO allocation_types(name)
+    VALUES('Income'),
+          ('Expense')
+          RETURNING id`);
+
+	testAllocationTypeIds.splice(0, 0, ...resultAllocationType.rows.map((a: { id: number }) => a.id));
+
+	const resultAllocations = await db.query(`
+    INSERT INTO allocations(amount, subcategory_id, budget_id, allocation_type, user_id, category_id, expense_type, frequency )
+    VALUES(200, ${testSubcategoryIds[0]}, ${testBudgetIds[0]}, ${testAllocationTypeIds[0]}, ${testUserIds[0]}, ${testCategoryIds[0]}, ${testExpenseTypeIds[0]}, ${testFrequencyIds[0]}),
+          (500, ${testSubcategoryIds[1]}, ${testBudgetIds[1]}, ${testAllocationTypeIds[0]}, ${testUserIds[1]}, ${testCategoryIds[1]}, ${testExpenseTypeIds[1]}, ${testFrequencyIds[1]}),
+          (770, ${testSubcategoryIds[1]}, ${testBudgetIds[2]}, ${testAllocationTypeIds[1]}, ${testUserIds[2]}, ${testCategoryIds[2]}, ${testExpenseTypeIds[2]}, ${testFrequencyIds[2]})
     RETURNING id`);
 
-  testAllocationIds.splice(0, 0, ...resultAllocations.rows.map((a: { id: number }) => a.id));
+	testAllocationIds.splice(0, 0, ...resultAllocations.rows.map((a: { id: number }) => a.id));
 
-  const resultContributors = await db.query(`
+	const resultContributors = await db.query(`
     INSERT INTO contributors(user_id, name)
     VALUES(${testUserIds[0]}, 'testContributor1'),
           (${testUserIds[1]}, 'testContributor2'),
           (${testUserIds[1]}, 'testContributor3')
     RETURNING id, user_id, name`);
 
-  testContributorIds.splice(0, 0, ...resultContributors.rows.map((a: { id: number }) => a.id));
+	testContributorIds.splice(0, 0, ...resultContributors.rows.map((a: { id: number }) => a.id));
 }
 
 async function commonBeforeEach() {
-  await db.query('BEGIN');
+	await db.query("BEGIN");
 }
 
 async function commonAfterEach() {
-  await db.query('ROLLBACK');
+	await db.query("ROLLBACK");
 }
 
 async function commonAfterAll() {
-  await db.end();
+	await db.end();
 }
 
 let u1token;
@@ -103,18 +141,21 @@ let u2token;
 let u3token;
 
 export {
-  commonBeforeAll,
-  commonAfterAll,
-  commonBeforeEach,
-  commonAfterEach,
-  testCategoryIds,
-  testSubcategoryIds,
-  testUserIds,
-  testBudgetIds,
-  testBudgetDates,
-  testAllocationIds,
-  testContributorIds,
-  u1token,
-  u2token,
-  u3token
+	commonBeforeAll,
+	commonAfterAll,
+	commonBeforeEach,
+	commonAfterEach,
+	testCategoryIds,
+	testSubcategoryIds,
+	testUserIds,
+	testBudgetIds,
+	testBudgetDates,
+	testAllocationIds,
+	testContributorIds,
+	testExpenseTypeIds,
+	testFrequencyIds,
+	testAllocationTypeIds,
+	u1token,
+	u2token,
+	u3token,
 };

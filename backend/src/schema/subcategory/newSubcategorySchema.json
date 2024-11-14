@@ -7,7 +7,6 @@
     "required": [
         "user_id",
         "name",
-        "description",
         "category_id",
         "system_default"
     ],
@@ -26,14 +25,6 @@
             "title": "The name Schema",
             "examples": [
                 "new budget"
-            ]
-        },
-        "description": {
-            "type": "string",
-            "default": "",
-            "title": "The description Schema",
-            "examples": [
-                "new budget description"
             ]
         },
         "category_id": {
@@ -56,7 +47,6 @@
     "examples": [{
         "user_id": 1,
         "name": "new budget",
-        "description": "new budget description",
         "category_id": 1,
         "system_default": true
     }]

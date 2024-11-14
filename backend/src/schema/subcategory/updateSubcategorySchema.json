@@ -21,14 +21,6 @@
                 "new budget"
             ]
         },
-        "description": {
-            "type": "string",
-            "default": "",
-            "title": "The description Schema",
-            "examples": [
-                "new budget description"
-            ]
-        },
         "category_id": {
             "type": "integer",
             "default": 0,
@@ -49,7 +41,6 @@
     "examples": [{
         "user_id": 1,
         "name": "new budget",
-        "description": "new budget description",
         "category_id": 1,
         "system_default": true
     }]

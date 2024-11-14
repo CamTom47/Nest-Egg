@@ -22,12 +22,12 @@ interface Allocation {
 	frequency?: number;
 }
 interface UpdateAllocation {
-  category_id?: number;
-  subcategory_id?: number;
-  allocation_type?: number;
-  expense_type?: number;
-  amount?: number;
-  frequency?: number;
+	category_id?: number;
+	subcategory_id?: number;
+	allocation_type?: number;
+	expense_type?: number;
+	amount?: number;
+	frequency?: number;
 }
 
 class Allocation {
@@ -43,7 +43,7 @@ class Allocation {
 		budget_id: number | undefined = undefined
 	): Promise<{}> {
 		let query: string = `
-            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", u.id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency
+            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", user_id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency
             FROM allocations`;
 
 		let whereExpressions: string[] = [];
@@ -55,7 +55,7 @@ class Allocation {
 		}
 		if (user_id !== undefined) {
 			queryValues.push(user_id);
-			whereExpressions.push(`users.id = $${queryValues.length}`);
+			whereExpressions.push(`user_id = $${queryValues.length}`);
 		}
 
 		let allocations: {}[] = [];
@@ -76,7 +76,7 @@ class Allocation {
 	static async findById(allocation_id: number): Promise<{}> {
 		let result: { rows: {}[] } = await db.query(
 			`
-            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", u.id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency
+            SELECT id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", user_id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency
             FROM allocations
             WHERE id = $1`,
 			[allocation_id]
@@ -87,12 +87,21 @@ class Allocation {
 		return subcategory;
 	}
 
-	static async create({ budget_id, category_id, subcategory_id, user_id, allocation_type, expense_type, amount = 0, frequency}: NewAllocation): Promise<{}> {
+	static async create({
+		budget_id,
+		category_id,
+		subcategory_id,
+		user_id,
+		allocation_type,
+		expense_type,
+		amount = 0,
+		frequency,
+	}: NewAllocation): Promise<{}> {
 		let result = await db.query(
 			`
       INSERT INTO allocations (budget_id, category_id, subcategory_id, user_id, allocation_type, expense_type, amount, frequency)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-      RETURNING id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", u.id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency`,
+      RETURNING id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", user_id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency`,
 			[budget_id, category_id, subcategory_id, user_id, allocation_type, expense_type, amount, frequency]
 		);
 
@@ -105,12 +114,12 @@ class Allocation {
 
 	static async update(id: number, data: UpdateAllocation): Promise<{}> {
 		const { setCols, values } = sqlForPartialUpdate(data, {
-      category_id: "categoryId",
-      subcategory_id: "subcategoryId",
-      allocation_type: "allocationType",
-      expense_type: "expenseType",
-      amount: "amount",
-      frequency: "frequency"
+			category_id: "categoryId",
+			subcategory_id: "subcategoryId",
+			allocation_type: "allocationType",
+			expense_type: "expenseType",
+			amount: "amount",
+			frequency: "frequency",
 		});
 
 		const allocationVarIdx = "$" + (values.length + 1);
@@ -118,7 +127,7 @@ class Allocation {
 		const querySql = `UPDATE allocations
       SET ${setCols}
       WHERE id = ${allocationVarIdx}
-      RETURNING id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", u.id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency`;
+      RETURNING id, amount, subcategory_id AS "subcategoryId", budget_id AS "budgetId", user_id AS "userId", category_id AS "categoryId", allocation_type AS "allocationType", expense_type AS "expenseType", frequency`;
 
 		const result = await db.query(querySql, [...values, id]);
 		const allocation = result.rows[0];

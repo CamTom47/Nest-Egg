@@ -23,14 +23,12 @@ describe('findAll', function () {
       {
         id: expect.any(Number),
         name: 'testSubcategory',
-        description: 'test description 1',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
       {
         id: expect.any(Number),
         name: 'testSubcategory2',
-        description: 'test description 2',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
@@ -43,21 +41,18 @@ describe('findAll', function () {
       {
         id: expect.any(Number),
         name: 'testSubcategory',
-        description: 'test description 1',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
       {
         id: expect.any(Number),
         name: 'testSubcategory2',
-        description: 'test description 2',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
       {
         id: expect.any(Number),
         name: 'testSubcategory3',
-        description: 'test description 3',
         categoryId: testCategoryIds[1],
         userId: testUserIds[1],
       },
@@ -70,14 +65,12 @@ describe('findAll', function () {
       {
         id: expect.any(Number),
         name: 'testSubcategory',
-        description: 'test description 1',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
       {
         id: expect.any(Number),
         name: 'testSubcategory2',
-        description: 'test description 2',
         categoryId: testCategoryIds[0],
         userId: testUserIds[0],
       },
@@ -91,7 +84,6 @@ describe('findById', function () {
     expect(subcategory).toEqual({
       id: expect.any(Number),
       name: 'testSubcategory',
-      description: 'test description 1',
       categoryId: testCategoryIds[0],
       userId: testUserIds[0],
     });
@@ -105,7 +97,6 @@ describe('findById', function () {
 
 interface NewSubcategoryData {
   name: string;
-  description: string;
   category_id: number;
   user_id: number;
   systemDefault: boolean;
@@ -115,7 +106,6 @@ describe('create', () => {
   test('works', async function () {
     let data: NewSubcategoryData = {
       name: 'newSubcat',
-      description: 'newSubcat description',
       category_id: testCategoryIds[0],
       user_id: testUserIds[0],
       systemDefault: false,
@@ -125,7 +115,6 @@ describe('create', () => {
     expect(newSubcategory).toEqual({
       id: expect.any(Number),
       name: 'newSubcat',
-      description: 'newSubcat description',
       categoryId: testCategoryIds[0],
       userId: testUserIds[0],
     });
@@ -134,7 +123,6 @@ describe('create', () => {
 
 interface UpdateSubcategoryData {
   name?: string;
-  description?: string;
   category_id?: number;
   user_id?: number;
   systemDefault?: boolean;
@@ -144,7 +132,6 @@ describe('update', () => {
   test('works', async () => {
     let data: UpdateSubcategoryData = {
       name: 'updateSubcat',
-      description: "update description",
       category_id: testCategoryIds[1]
     };
 
@@ -152,7 +139,6 @@ describe('update', () => {
     expect(updatedSubcategory).toEqual({
       id: expect.any(Number),
       name: 'updateSubcat',
-      description: 'update description',
       categoryId: testCategoryIds[1],
       userId: testUserIds[0]
     });

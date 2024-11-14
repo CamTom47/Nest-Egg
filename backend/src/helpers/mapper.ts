@@ -1,13 +1,11 @@
 let categoryMap = {
 	name: "name",
-	description: "description",
 	userId: "user_id",
 	systemDefault: "system_default",
 };
 
 let subcategoryMap = {
 	name: "name",
-	description: "description",
 	userId: "user_id",
 	categoryId: "category_id",
 	systemDefault: "system_default",
@@ -33,10 +31,15 @@ let allocationMap = {
 	amount: "amount",
 	subcategoryId: "subcategory_id",
 	budgetId: "budget_id",
+	allocationType: "allocation_type",
+	userId: "user_id",
+	categoryId: "category_id",
+	expenseType: "expense_type",
+	frequency: "frequency",
 };
 let contributorMap = {
 	name: "name",
-	userId: "user_id"
+	userId: "user_id",
 };
 
 /**
