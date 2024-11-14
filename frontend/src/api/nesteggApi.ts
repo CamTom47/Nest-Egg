@@ -112,8 +112,10 @@ class NestEggApi {
 	 * @returns {categories}
 	 */
 
-	static async findAllCategories<Promise>(): Promise {
-		let res = await this.request("categories/");
+	static async findAllCategories<Promise>(data: { userId?: number } | null = null): Promise {
+		let res;
+		if (data !== null) res =  await this.request(`categories?userId=${data.userId}`);
+		else res = await this.request("categories");
 		return res.categories;
 	}
 
@@ -123,8 +125,10 @@ class NestEggApi {
 	 * {data: {categoryId}}
 	 * @returns {category}
 	 */
-	static async findCategory<Promise>(data: { categoryId: number }): Promise {
-		let res = await this.request(`categories/${data.categoryId}`, data, "get");
+	static async findCategory<Promise>(data: { categoryId: number; userId?: number }): Promise {
+		let res;
+		if (data.userId) res = await this.request(`categories/${data.categoryId}?userId=${data.userId}`);
+		res = await this.request(`categories/${data.categoryId}`);
 		return res.category;
 	}
 
@@ -173,8 +177,10 @@ class NestEggApi {
 	 * @returns {subcategories}
 	 */
 
-	static async findAllSubcategories<Promise>(): Promise {
-		let res = await this.request("subcategories/");
+	static async findAllSubcategories<Promise>(data: {userId? : number}): Promise {
+		let res;
+		if (data.userId) res = await this.request(`subcategories?userId=${data.userId}`);
+		else res = await this.request("subcategories/");
 		return res.subcategories;
 	}
 
@@ -184,8 +190,10 @@ class NestEggApi {
 	 * {data: {subcategoryId}}
 	 * @returns {subcategory}
 	 */
-	static async findSubcategory<Promise>(data: { subcategoryId: number }): Promise {
-		let res = await this.request(`subcategories/${data.subcategoryId}`, data, "get");
+	static async findSubcategory<Promise>(data: { subcategoryId: number, userId?: number }): Promise {
+		let res;
+		if(data.userId) res = await this.request(`subcategories/${data.subcategoryId}?userId=${data.userId}`)
+		else res = await this.request(`subcategories/${data.subcategoryId}`, data, "get");
 		return res.subcategory;
 	}
 
@@ -195,7 +203,7 @@ class NestEggApi {
 	 * {data: {userId, name, description}}
 	 * @returns {subcategory}
 	 */
-	static async createSubategory<Promise>(data: { userId: number; name: string; description: string }): Promise {
+	static async createSubcategory<Promise>(data: { userId: number; name: string; description: string }): Promise {
 		let res = await this.request(`subcategories/`, data, "post");
 		return res.subcategory;
 	}
@@ -234,8 +242,10 @@ class NestEggApi {
 	 * @returns {allocations}
 	 */
 
-	static async findAllAllocations<Promise>(): Promise {
-		let res = await this.request("allocations/");
+	static async findAllAllocations<Promise>(data: {userId?: number}): Promise {
+		let res;
+		if (data.userId) res = await this.request(`allocations?userId=${data.userId}`);
+		else res = await this.request("allocations/");
 		return res.allocations;
 	}
 
@@ -245,8 +255,10 @@ class NestEggApi {
 	 * {data: {allocationId}}
 	 * @returns {allocation}
 	 */
-	static async findAllocation<Promise>(data: { allocationId: number }): Promise {
-		let res = await this.request(`allocations/${data.allocationId}`, data, "get");
+	static async findAllocation<Promise>(data: { allocationId: number, userId?: number}): Promise {
+		let res;
+		if (data.userId) res = await this.request(`allocations/${data.allocationId}?userId=${data.userId}`);
+		else res = await this.request(`allocations/${data.allocationId}`, data, "get");
 		return res.allocation;
 	}
 
@@ -295,8 +307,10 @@ class NestEggApi {
 	 * @returns {budgets}
 	 */
 
-	static async findAllBudgets<Promise>(): Promise {
-		let res = await this.request("budgets/");
+	static async findAllBudgets<Promise>(data: {userId?: number}): Promise {
+		let res;
+		if(data.userId) res = await this.request(`budgets?userId${data.userId}`);
+		else res = await this.request("budgets/");
 		return res.budgets;
 	}
 
@@ -306,8 +320,10 @@ class NestEggApi {
 	 * {data: {allocationId}}
 	 * @returns {allocation}
 	 */
-	static async findBudget<Promise>(data: { budgetId: number }): Promise {
-		let res = await this.request(`budgets/${data.budgetId}`, data, "get");
+	static async findBudget<Promise>(data: { budgetId: number, userId?: number }): Promise {
+		let res;
+		if(data.userId) res = await this.request(`budgets/${data.budgetId}?userId=${data.userId}`);
+		else res = await this.request(`budgets/${data.budgetId}`, data, "get");
 		return res.budget;
 	}
 
