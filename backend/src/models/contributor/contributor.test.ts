@@ -8,7 +8,9 @@ import {
   commonBeforeEach,
   testCategoryIds,
   testUserIds,
-  testContributorIds
+  testContributorIds,
+  testBudgetIds,
+  testAllocationIds
 } from '../../testCommon';
 
 afterAll(commonAfterAll);
@@ -17,7 +19,7 @@ beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
 
 describe('findAll', function () {
-  test('works for system default contributors', async function () {
+  test('works for all contributors', async function () {
     let contributors = await Contributor.findAll();
     expect(contributors).toEqual([
       { id: expect.any(Number), userId: testUserIds[0], name: "testContributor1"},
@@ -50,13 +52,17 @@ describe('findById', function () {
 interface NewContributorData {
   user_id: number;
   name: string;
+  budget_id: number;
+  allocation_id: number;
 }
 
 describe('create', () => {
   test('works', async function () {
     let data: NewContributorData = {
       user_id: testUserIds[0],
-      name: 'newContributor'
+      name: 'newContributor',
+      budget_id: testBudgetIds[0],
+      allocation_id: testAllocationIds[0],
     };
 
     let newContributor = await Contributor.create(data);

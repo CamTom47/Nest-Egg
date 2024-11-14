@@ -6,7 +6,9 @@
     "title": "New Category Schema",
     "required": [
         "user_id",
-        "name"
+        "name",
+        "budget_id",
+        "allocation_id"
     ],
     "properties": {
         "user_id": {
@@ -24,10 +26,28 @@
             "examples": [
                 "new budget"
             ]
+        },
+        "budget_id": {
+            "type": "integer",
+            "default": "",
+            "title": "The budget_id Schema",
+            "examples": [
+                1,2,3
+            ]
+        },
+        "allocation_id": {
+            "type": "integer",
+            "default": "",
+            "title": "The allocation_id Schema",
+            "examples": [
+                1,2,3
+            ]
         }
     },
     "examples": [{
         "user_id": 1,
-        "name": "new budget"
+        "name": "new budget",
+        "budget_id": 1,
+        "allocation_id": 1
     }]
 }

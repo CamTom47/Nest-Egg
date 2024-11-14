@@ -36,9 +36,11 @@ interface CustomRequest<T> extends ReadableStream {
 
 router.get("/", ensureLoggedIn, async function (req: Request, res: Response, next: Function): Promise<{} | void> {
 	try {
-		let categories;
-		if (req.body.user_id) categories = await Category.findAll(req.body.user_id);
-		else categories = await Category.findAll();
+		let user_id: number | undefined = undefined;
+		if (req.query){
+			user_id = Number(req.query.userId)
+		}
+		let categories = await Category.findAll(user_id);
 		return res.status(200).json({ categories });
 	} catch (err: any) {
 		return next(err);

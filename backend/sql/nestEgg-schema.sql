@@ -68,13 +68,13 @@ CREATE TABLE contributors(
 CREATE TABLE budgets_contributors(
     id SERIAL PRIMARY KEY,
     budget_id INTEGER REFERENCES budgets(id) ON DELETE CASCADE,
-    contribution_id INTEGER REFERENCES contributors(id) ON DELETE CASCADE
+    contributor_id INTEGER REFERENCES contributors(id) ON DELETE CASCADE
 );
 
 CREATE TABLE allocations_contributors(
     id SERIAL PRIMARY KEY,
     allocation_id INTEGER REFERENCES allocations(id) ON DELETE CASCADE,
-    contribution_id INTEGER REFERENCES contributors(id) ON DELETE CASCADE
+    contributor_id INTEGER REFERENCES contributors(id) ON DELETE CASCADE
 );
 
 

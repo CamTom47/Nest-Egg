@@ -40,6 +40,8 @@ let allocationMap = {
 let contributorMap = {
 	name: "name",
 	userId: "user_id",
+	budgetId: "budget_id",
+	allocationId: "allocation_id",
 };
 
 /**

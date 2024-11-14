@@ -14,6 +14,8 @@ import {
 	u1token,
 	u2token,
 	u3token,
+	testBudgetIds,
+	testAllocationIds,
 } from "../../testCommon";
 
 beforeAll(commonBeforeAll);
@@ -22,8 +24,8 @@ afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
 describe("GET /", () => {
-	test("works", async () => {
-		const resp = await request(app).get("/contributors").set("authorization", `Bearer ${u1token}`);
+	test("works when admin/not correct user ALL contributors", async () => {
+		const resp = await request(app).get(`/contributors`).set("authorization", `Bearer ${u1token}`);
 
 		expect(resp.body).toEqual({
 			contributors: [
@@ -35,13 +37,25 @@ describe("GET /", () => {
 
 		expect(resp.statusCode).toEqual(200);
 	});
+	test("works when admin/not correct user", async () => {
+		const resp = await request(app).get(`/contributors?userId=${testUserIds[1]}`).set("authorization", `Bearer ${u1token}`);
 
-	test("works when a user_id is passed into req.body", async () => {
+		expect(resp.body).toEqual({
+			contributors: [
+				{ id: expect.any(Number), userId: testUserIds[1], name: "testContributor2" },
+				{ id: expect.any(Number), userId: testUserIds[1], name: "testContributor3" },
+			],
+		});
+
+		expect(resp.statusCode).toEqual(200);
+	});
+
+	test("works when a not admin/ correct user", async () => {
 		const data = {
 			user_id: testUserIds[1],
 		};
 
-		const resp = await request(app).get("/contributors").set("authorization", `Bearer ${u1token}`).send(data);
+		const resp = await request(app).get(`/contributors?userId=${testUserIds[1]}`).set("authorization", `Bearer ${u2token}`).send(data);
 
 		expect(resp.body).toEqual({
 			contributors: [
@@ -55,9 +69,9 @@ describe("GET /", () => {
 
 	test("throws error with invalid user_id", async () => {
 		const resp = await request(app)
-			.get("/contributors")
+			.get(`/contributors?userId=9999`)
 			.set("authorization", `Bearer ${u1token}`)
-			.send({ user_id: 9999 });
+			.send();
 
 		expect(resp.body).toEqual({
 			contributors: { message: "No contributors are associated with User ID: 9999", status: 404 },
@@ -87,6 +101,8 @@ describe("POST /", () => {
 			name: "new contributor",
 			description: "new description",
 			userId: testUserIds[0],
+			budgetId: testBudgetIds[0],
+			allocationId: testAllocationIds[0],
 		};
 
 		const resp = await request(app).post("/contributors").set("authorization", `Bearer ${u1token}`).send(data);

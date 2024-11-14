@@ -32,9 +32,14 @@ interface CustomRequest<T> extends ReadableStream {
  * Authorization require: logged in
  */
 
-router.get("/", ensureLoggedIn, async function (req: Request, res: Response, next: Function): Promise<{} | void> {
+router.get("/", ensureCorrectUserOrAdmin, async function (req: Request, res: Response, next: Function): Promise<{} | void> {
 	try {
-		let contributors = await Contributor.findAll(req.body);
+		let user_id: number | undefined = undefined; 
+
+		if(req.query.userId){
+			user_id = Number(req.query.userId);
+		}
+		let contributors = await Contributor.findAll(user_id);
 		return res.status(200).json({ contributors });
 	} catch (err: any) {
 		return next(err);
