@@ -1,0 +1,74 @@
+.Budget{
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+}
+.Budget > div:first-child{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    
+}
+.Budget > div:last-child{
+    width: 25%;
+}
+.Budget-incomeSection{
+    padding: 2rem;
+}
+.incomeSectionBody{
+    background: var(--color-secondary3);
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    padding: 2rem;
+    margin: 0;
+    box-shadow: 0 5px 5px var(--gray-2);
+}
+.Budget-expenseSection{
+    padding: 2rem;
+    
+}
+.expenseSectionBody{
+    background: var(--color-secondary3);
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    padding: 2rem;
+    margin: 0;
+    box-shadow: 0 5px 5px var(--gray-2);
+}
+.Budget-breakdownSection{
+    background: var(--color-secondary3);
+}
+
+/* Table Styling  with Table Styling*/
+/* table{
+    width: 100%;
+    border-spacing: 0;
+}
+thead>tr{
+    background: var(--color-secondary1);
+    border-style: none;
+}
+tbody>tr:nth-child(odd){
+    background-color: gray;
+}
+tr>td{
+    padding: .5rem;
+    border-style: hidden;
+    border-left: var(--color-secondary1-light);
+    border-right: var(--color-secondary1-light);
+}
+tr>th{
+    border-style: none;
+    border-left: 1px solid var(--color-secondary1-light);
+    border-right: 1px solid var(--color-secondary1-light);
+    border-radius: 5px;
+    padding: .5rem;
+}
+.totalColumn{
+    border-spacing: 2rem;
+} */
+
+/* Table Styling with Flex Display */
+table{
+display: grid;
+}

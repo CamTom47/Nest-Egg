@@ -112,10 +112,8 @@ class NestEggApi {
 	 * @returns {categories}
 	 */
 
-	static async findAllCategories<Promise>(data: { userId?: number } | null = null): Promise {
-		let res;
-		if (data !== null) res =  await this.request(`categories?userId=${data.userId}`);
-		else res = await this.request("categories");
+	static async findAllCategories<Promise>(data: { userId?: number } = {}): Promise {
+		let res =  await this.request("categories", data, "get");
 		return res.categories;
 	}
 
@@ -177,7 +175,7 @@ class NestEggApi {
 	 * @returns {subcategories}
 	 */
 
-	static async findAllSubcategories<Promise>(data: {userId? : number}): Promise {
+	static async findAllSubcategories<Promise>(data: {userId? : number} = {}): Promise {
 		let res;
 		if (data.userId) res = await this.request(`subcategories?userId=${data.userId}`);
 		else res = await this.request("subcategories/");
@@ -242,7 +240,7 @@ class NestEggApi {
 	 * @returns {allocations}
 	 */
 
-	static async findAllAllocations<Promise>(data: {userId?: number}): Promise {
+	static async findAllAllocations<Promise>(data: {userId?: number} = {}): Promise {
 		let res;
 		if (data.userId) res = await this.request(`allocations?userId=${data.userId}`);
 		else res = await this.request("allocations/");
@@ -307,7 +305,7 @@ class NestEggApi {
 	 * @returns {budgets}
 	 */
 
-	static async findAllBudgets<Promise>(data: {userId?: number}): Promise {
+	static async findAllBudgets<Promise>(data: {userId?: number} = {}): Promise {
 		let res;
 		if(data.userId) res = await this.request(`budgets?userId${data.userId}`);
 		else res = await this.request("budgets/");

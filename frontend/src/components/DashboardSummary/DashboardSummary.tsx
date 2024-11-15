@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import NestEggApi from "../../api/nesteggApi";
 
 //Components
-import NewBudgetForm from "../Forms/NewBudgetForm/NewBudgetForm";
 
 //Styling
 import "./DashboardSummary.css";
@@ -10,11 +10,11 @@ import "./DashboardSummary.css";
 //Context
 import UserContext from "../../context/UserContext";
 
-interface BudgetCreation {
+interface Budget {
+	id: number;
+	userId: number;
 	name: string;
 	description: string;
-	incomes: {}[];
-	expenses: {}[];
 }
 interface FormProps {
 	categories: [];
@@ -22,23 +22,20 @@ interface FormProps {
 }
 
 const DashboardSummary = ({ categories, subcategories }: FormProps): React.JSX.Element => {
-	const [showNewBudgetForm, setShowNewBudgetForm] = useState<boolean>(false);
 	const [budgets, setBudgets] = useState<{}[]>([]);
 
-	const currentUser = useContext(UserContext)
+	const navigate = useNavigate();
+	const {currentUser} = useContext(UserContext);
 
-	const toggleNewBudgetForm = () => {
-		setShowNewBudgetForm((showNewBudgetForm) => !showNewBudgetForm);
-	};
+	const createBudget = async () => {
+		let budget: Budget = await NestEggApi.createBudget({ userId: currentUser.id, name: "", description: "" });
+		navigate(`/budget/${budget.id}`);
 
-	const createBudget = async (formData: BudgetCreation) => {
-		console.log(formData)
 		//need to make a income subcategory creation and new allocation
 
 		// need to make an expense subcategory and new allocation
-		// let budget = await NestEggApi.createBudget({ userId: currentUser.id, name: formData.name, description: formData.description });
 		// let subcategories = await NestEggApi.createSubcategory()
-		// let allocations = 
+		// let allocations =
 
 		// setBudgets([{ ...budgets, budget }]);
 	};
@@ -57,11 +54,7 @@ const DashboardSummary = ({ categories, subcategories }: FormProps): React.JSX.E
 				</div>
 			</div>
 			<div className='Dashboard-body'>
-				<button onClick={toggleNewBudgetForm}>Create New Budget</button>
-			</div>
-
-			<div className={showNewBudgetForm === true ? "visible" : "hidden"}>
-				<NewBudgetForm toggle={toggleNewBudgetForm} categories={categories} subcategories={subcategories} createBudget={createBudget} />
+				<button onClick={createBudget}>Create New Budget</button>
 			</div>
 		</div>
 	);

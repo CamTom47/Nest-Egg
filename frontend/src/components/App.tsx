@@ -35,7 +35,7 @@ const App = (): React.JSX.Element => {
 
 	console.debug(currentUser, token);
 
-	if(token) NestEggApi.token = token
+	if (token) NestEggApi.token = token;
 
 	const checkLoggedIn = useCallback(async () => {
 		if (token) {
@@ -52,7 +52,7 @@ const App = (): React.JSX.Element => {
 		let token: string = await NestEggApi.login(formData);
 		if (token) {
 			NestEggApi.token = token;
-			setToken(token)
+			setToken(token);
 			localStorage.setItem("token", token);
 			let user: UserType | null = await decodeToken(token);
 			if (user) {
@@ -80,21 +80,36 @@ const App = (): React.JSX.Element => {
 		navigate("/");
 	};
 
-	return (
-		<div className='App'>
-			<UserContext.Provider value={{ currentUser, login, register, logout }}>
-				<Navbar />
-				<Routes>
-					<Route path='/register' element={<RegisterForm />} />
-					<Route path='/account' element={<Account />} />
-					<Route path='/budget/:budget_id' element={<Budget />} />
-					<Route path='/dashboard' element={<Dashboard />} />
-					<Route path='/' element={<Homepage />} />
-					<Route path='*' element={<Homepage />} />
-				</Routes>
-			</UserContext.Provider>
-		</div>
-	);
+	if (!currentUser) {
+		return (
+			<div className='App'>
+				<UserContext.Provider value={{ currentUser, login, register }}>
+					<Navbar />
+					<Routes>
+						<Route path='/register' element={<RegisterForm />} />
+						<Route path='/' element={<Homepage />} />
+						<Route path='*' element={<Homepage />} />
+					</Routes>
+				</UserContext.Provider>
+			</div>
+		);
+	} else {
+		return (
+			<div className='App'>
+				<UserContext.Provider value={{ currentUser, login, register, logout }}>
+					<Navbar />
+					<Routes>
+						<Route path='/register' element={<RegisterForm />} />
+						<Route path='/account' element={<Account />} />
+						<Route path='/budget/:budgetId' element={<Budget />} />
+						<Route path='/dashboard' element={<Dashboard />} />
+						<Route path='/' element={<Homepage />} />
+						<Route path='*' element={<Homepage />} />
+					</Routes>
+				</UserContext.Provider>
+			</div>
+		);
+	}
 };
 
 export default App;
