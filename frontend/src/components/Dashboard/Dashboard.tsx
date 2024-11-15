@@ -64,7 +64,7 @@ const Dashboard = (): React.JSX.Element => {
 				<DashboardCard />
 			</div>
 			<div className='Dashboard-Summary'>
-				<DashboardSummary categories={categories} subcategories={subcategories}/>
+				<DashboardSummary categories={categories} subcategories={subcategories} allocations={allocations}/>
 			</div>
 		</div>
 	);

@@ -1,4 +1,4 @@
-.Budget{
+/* .Budget{
     display: flex;
     justify-content: space-between;
     width: 100vw;
@@ -37,7 +37,7 @@
 }
 .Budget-breakdownSection{
     background: var(--color-secondary3);
-}
+} */
 
 /* Table Styling  with Table Styling*/
 /* table{
@@ -69,6 +69,3 @@ tr>th{
 } */
 
 /* Table Styling with Flex Display */
-table{
-display: grid;
-}

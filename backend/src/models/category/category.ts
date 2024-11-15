@@ -23,7 +23,7 @@ class Category {
 
   static async findAll(user_id: number | undefined = undefined): Promise<{}> {
     let query: string = `
-            SELECT id, name, description
+            SELECT id, name
             FROM categories
             `;
 
@@ -48,7 +48,7 @@ class Category {
   static async findById(category_id: number): Promise<{}> {
     let result: { rows: {}[] } = await db.query(
       `
-            SELECT id, name, description
+            SELECT id, name
             FROM categories
             WHERE id = $1`,
       [category_id]
@@ -64,10 +64,10 @@ class Category {
   static async create({ name, user_id, description, system_default = false }: NewCategory): Promise<{}> {
     let result = await db.query(
       `
-      INSERT INTO categories ( name, user_id, description, system_default)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, user_id AS "userId", name, description`,
-      [name,user_id, description, system_default]
+      INSERT INTO categories ( name, user_id, system_default)
+      VALUES ($1, $2, $3)
+      RETURNING id, user_id AS "userId", name`,
+      [name,user_id, system_default]
     );
 
     let category = result.rows[0];
@@ -80,7 +80,6 @@ class Category {
   static async update(id: number, data: UpdateCategory): Promise<{}> {
     const { setCols, values } = sqlForPartialUpdate(data, {
       name: 'name',
-      description: 'description',
     });
 
     const categoryVarIdx = '$' + (values.length + 1);
@@ -88,7 +87,7 @@ class Category {
     const querySql = `UPDATE categories
       SET ${setCols}
       WHERE id = ${categoryVarIdx}
-      RETURNING id, name, description, user_id AS "userId"`;
+      RETURNING id, name, user_id AS "userId"`;
 
     const result = await db.query(querySql, [...values, id]);
     const category = result.rows[0];

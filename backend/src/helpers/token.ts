@@ -10,8 +10,8 @@ interface Payload{
 }
 
 function createToken({id, username, isAdmin}: Payload): {} {
-    console.assert(isAdmin !== undefined, "createtoken passwed without isAdmin property")
-
+    console.assert(isAdmin !== undefined, "createtoken password without isAdmin property")
+console.log(id, username, isAdmin)
     let payload = {
         "id": id,
         "username": username,

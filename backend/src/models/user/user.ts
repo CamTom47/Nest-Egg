@@ -40,10 +40,11 @@ class User {
 			`
             SELECT users.id, first_name AS "firstName", last_name AS "lastName", username, email, is_admin AS "isAdmin", COUNT(b) AS "NumberOfBudgets"
             FROM users
-            JOIN budgets AS b
-            ON users.id = budgets.user_id
+            LEFT JOIN budgets AS b
+            ON users.id = b.user_id
+			WHERE users.id = $1
             GROUP BY(users.id)
-            WHERE id = $1`,
+			`,
 			[user_id]
 		);
 
@@ -56,12 +57,12 @@ class User {
 	static async authenticate(username: string, password: string) {
 		const result = await db.query(
 			`
-        SELECT users.id, first_name AS "firstName", last_name AS "lastName", username, email, is_admin AS "isAdmin", COUNT(b) AS "NumberOfBudgets"
+        SELECT users.id, users.password, first_name AS "firstName", last_name AS "lastName", username, email, is_admin AS "isAdmin", COUNT(b) AS "NumberOfBudgets"
             FROM users
-            JOIN budgets AS b
-            ON users.id = budgets.user_id
-            GROUP BY(users.id)
-        WHERE username = $1`,
+            LEFT JOIN budgets AS b
+            ON users.id = b.user_id
+			WHERE users.username = $1
+			GROUP BY(users.id)`,
 			[username]
 		);
 

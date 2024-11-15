@@ -101,7 +101,7 @@ const App = (): React.JSX.Element => {
 					<Routes>
 						<Route path='/register' element={<RegisterForm />} />
 						<Route path='/account' element={<Account />} />
-						<Route path='/budget/:budgetId' element={<Budget />} />
+						<Route path='/budgets/:budgetId' element={<Budget />} />
 						<Route path='/dashboard' element={<Dashboard />} />
 						<Route path='/' element={<Homepage />} />
 						<Route path='*' element={<Homepage />} />

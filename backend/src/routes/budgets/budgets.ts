@@ -34,6 +34,7 @@ router.get("/:budget_id", ensureCorrectUserOrAdmin, async function (req: Request
 router.post("/", ensureLoggedIn, async function (req: Request, res: Response, next: NextFunction) {
 	try {
 		const data: NewBudget = mapper(req.body, "budget");
+		console.log(req.body)
 		const validator = await jsonschema.validate(data, newBudgetSchema);
 		if (!validator.valid) {
 			const errs = validator.errors.map((err) => err.stack);
